@@ -76,9 +76,9 @@ const StatNumber = ({ value, suffix = "", prefix = "", visible }) => {
   return <span>{prefix}{visible ? count.toLocaleString() : "0"}{suffix}</span>;
 };
 
-const GridPattern = () => (<div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 0 }}><div style={{ position: "absolute", inset: "-50%", backgroundImage: `linear-gradient(${C.border}15 1px, transparent 1px), linear-gradient(90deg, ${C.border}15 1px, transparent 1px)`, backgroundSize: "80px 80px", transform: "perspective(600px) rotateX(60deg)", transformOrigin: "center 40%", maskImage: "radial-gradient(ellipse 60% 50% at 50% 40%, black 20%, transparent 70%)", WebkitMaskImage: "radial-gradient(ellipse 60% 50% at 50% 40%, black 20%, transparent 70%)" }} /></div>);
+const GridPattern = () => (<div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 0, maxWidth: "100%" }}><div style={{ position: "absolute", inset: "-50%", backgroundImage: `linear-gradient(${C.border}15 1px, transparent 1px), linear-gradient(90deg, ${C.border}15 1px, transparent 1px)`, backgroundSize: "80px 80px", transform: "perspective(600px) rotateX(60deg)", transformOrigin: "center 40%", maskImage: "radial-gradient(ellipse 60% 50% at 50% 40%, black 20%, transparent 70%)", WebkitMaskImage: "radial-gradient(ellipse 60% 50% at 50% 40%, black 20%, transparent 70%)" }} /></div>);
 
-const GlowOrb = ({ x = "50%", y = "50%", size = 600, color = C.fox, opacity = 0.06 }) => (<div style={{ position: "absolute", left: x, top: y, width: size, height: size, transform: "translate(-50%, -50%)", background: `radial-gradient(circle, ${color}${Math.round(opacity * 255).toString(16).padStart(2, '0')} 0%, transparent 70%)`, pointerEvents: "none", zIndex: 0 }} />);
+const GlowOrb = ({ x = "50%", y = "50%", size = 600, color = C.fox, opacity = 0.06 }) => (<div style={{ position: "absolute", left: x, top: y, width: size, height: size, transform: "translate(-50%, -50%)", background: `radial-gradient(circle, ${color}${Math.round(opacity * 255).toString(16).padStart(2, '0')} 0%, transparent 70%)`, pointerEvents: "none", zIndex: 0, maxWidth: "100vw" }} />);
 
 const SectionLabel = ({ children }) => (<div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase", color: C.fox, marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}><div style={{ width: 24, height: 1, background: C.fox, opacity: 0.5 }} />{children}</div>);
 
@@ -763,8 +763,8 @@ export default function FoxtailWebsite() {
   };
 
   return (
-    <div style={{ background: C.night, color: C.t1, fontFamily: "'Space Grotesk', sans-serif", overflowX: "hidden", minHeight: "100vh" }}>
-      <style>{RESPONSIVE_CSS}</style>
+    <div style={{ background: C.night, color: C.t1, fontFamily: "'Space Grotesk', sans-serif", overflowX: "hidden", minHeight: "100vh", maxWidth: "100vw" }}>
+      <style>{RESPONSIVE_CSS}{`html, body { overflow-x: hidden; max-width: 100vw; }`}</style>
       <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&family=Manrope:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
       <Nav page={page} setPage={setPage} />
       {renderPage()}

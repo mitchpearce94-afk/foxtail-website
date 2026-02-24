@@ -11,6 +11,38 @@ const C = {
 };
 
 // ═══════════════════════════════════════════════════
+// RESPONSIVE
+// ═══════════════════════════════════════════════════
+function useMobile(breakpoint = 768) {
+  const [mobile, setMobile] = useState(typeof window !== "undefined" ? window.innerWidth < breakpoint : false);
+  useEffect(() => { const h = () => setMobile(window.innerWidth < breakpoint); window.addEventListener("resize", h); return () => window.removeEventListener("resize", h); }, [breakpoint]);
+  return mobile;
+}
+
+const RESPONSIVE_CSS = `
+@media (max-width: 768px) {
+  .fx-section { padding-left: 20px !important; padding-right: 20px !important; }
+  .fx-grid-3 { grid-template-columns: 1fr !important; }
+  .fx-grid-4 { grid-template-columns: 1fr !important; }
+  .fx-grid-2 { grid-template-columns: 1fr !important; }
+  .fx-grid-2-equal { grid-template-columns: 1fr !important; gap: 40px !important; }
+  .fx-stat-grid { grid-template-columns: 1fr !important; gap: 20px !important; }
+  .fx-hiw-line { display: none !important; }
+  .fx-hero { padding: 120px 20px 60px !important; min-height: auto !important; }
+  .fx-hero h1 { font-size: 36px !important; }
+  .fx-hero-buttons { flex-direction: column !important; align-items: stretch !important; }
+  .fx-hero-buttons a { text-align: center !important; }
+  .fx-page-hero { padding: 140px 20px 60px !important; }
+  .fx-page-hero h1 { font-size: 32px !important; }
+  .fx-contact-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+  .fx-footer-cols { flex-direction: column !important; gap: 32px !important; }
+  .fx-scroll-indicator { display: none !important; }
+  .fx-cta-buttons { flex-direction: column !important; align-items: stretch !important; }
+  .fx-cta-buttons a { text-align: center !important; }
+}
+`;
+
+// ═══════════════════════════════════════════════════
 // SHARED COMPONENTS
 // ═══════════════════════════════════════════════════
 const Mark = ({ size = 44, pupilColor = C.night }) => (
@@ -51,7 +83,7 @@ const GlowOrb = ({ x = "50%", y = "50%", size = 600, color = C.fox, opacity = 0.
 const SectionLabel = ({ children }) => (<div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase", color: C.fox, marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}><div style={{ width: 24, height: 1, background: C.fox, opacity: 0.5 }} />{children}</div>);
 
 const PageHero = ({ label, title, subtitle, children }) => (
-  <section style={{ position: "relative", padding: "160px 48px 100px", overflow: "hidden", textAlign: "center" }}>
+  <section className="fx-page-hero" style={{ position: "relative", padding: "160px 48px 100px", overflow: "hidden", textAlign: "center" }}>
     <GridPattern />
     <GlowOrb x="50%" y="40%" size={700} color={C.fox} opacity={0.035} />
     <div style={{ position: "relative", zIndex: 1, maxWidth: 700, margin: "0 auto" }}>
@@ -72,6 +104,8 @@ const APP_URL = "https://app.foxtailai.com.au";
 // ═══════════════════════════════════════════════════
 function Nav({ page, setPage }) {
   const [scrollY, setScrollY] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const mobile = useMobile();
   useEffect(() => { const h = () => setScrollY(window.scrollY); window.addEventListener("scroll", h, { passive: true }); return () => window.removeEventListener("scroll", h); }, []);
 
   const links = [
@@ -83,17 +117,40 @@ function Nav({ page, setPage }) {
     { label: "Contact", page: "contact" },
   ];
 
+  const nav = (pg) => { setPage(pg); window.scrollTo(0, 0); setMenuOpen(false); };
+
   return (
-    <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, padding: "0 48px", height: 72, display: "flex", alignItems: "center", justifyContent: "space-between", background: scrollY > 50 ? `${C.night}ee` : "transparent", backdropFilter: scrollY > 50 ? "blur(20px)" : "none", borderBottom: scrollY > 50 ? `1px solid ${C.border}` : "1px solid transparent", transition: "all 0.4s ease" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 12, cursor: "pointer" }} onClick={() => { setPage("home"); window.scrollTo(0, 0); }}>
+    <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, padding: mobile ? "0 20px" : "0 48px", height: 72, display: "flex", alignItems: "center", justifyContent: "space-between", background: scrollY > 50 || menuOpen ? `${C.night}ee` : "transparent", backdropFilter: scrollY > 50 || menuOpen ? "blur(20px)" : "none", borderBottom: scrollY > 50 ? `1px solid ${C.border}` : "1px solid transparent", transition: "all 0.4s ease" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 12, cursor: "pointer" }} onClick={() => nav("home")}>
         <Mark size={28} /><span style={{ fontSize: 18, fontWeight: 600, letterSpacing: "-0.02em" }}>Foxtail</span>
       </div>
-      <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
-        {links.map(l => (
-          <a key={l.page} onClick={(e) => { e.preventDefault(); setPage(l.page); window.scrollTo(0, 0); }} href="#" style={{ color: page === l.page ? C.t1 : C.t3, fontSize: 13, fontWeight: 500, textDecoration: "none", letterSpacing: "0.02em", transition: "color 0.2s", cursor: "pointer" }} onMouseOver={e => e.target.style.color = C.t1} onMouseOut={e => { if (page !== l.page) e.target.style.color = C.t3; }}>{l.label}</a>
-        ))}
-        <a href={APP_URL} target="_blank" rel="noopener noreferrer" style={{ background: C.fox, color: C.night, padding: "8px 20px", borderRadius: 8, fontSize: 13, fontWeight: 600, textDecoration: "none", transition: "background 0.2s" }} onMouseOver={e => e.target.style.background = C.foxLight} onMouseOut={e => e.target.style.background = C.fox}>Login</a>
-      </div>
+
+      {mobile ? (
+        <>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <a href={APP_URL} target="_blank" rel="noopener noreferrer" style={{ background: C.fox, color: C.night, padding: "6px 14px", borderRadius: 6, fontSize: 12, fontWeight: 600, textDecoration: "none" }}>Login</a>
+            <button onClick={() => setMenuOpen(!menuOpen)} style={{ background: "none", border: "none", cursor: "pointer", padding: 4 }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={C.t1} strokeWidth="2" strokeLinecap="round">
+                {menuOpen ? <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></> : <><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></>}
+              </svg>
+            </button>
+          </div>
+          {menuOpen && (
+            <div style={{ position: "absolute", top: 72, left: 0, right: 0, background: `${C.night}f5`, backdropFilter: "blur(20px)", borderBottom: `1px solid ${C.border}`, padding: "16px 20px", display: "flex", flexDirection: "column", gap: 4 }}>
+              {links.map(l => (
+                <a key={l.page} onClick={(e) => { e.preventDefault(); nav(l.page); }} href="#" style={{ color: page === l.page ? C.fox : C.t2, fontSize: 15, fontWeight: 500, textDecoration: "none", padding: "10px 0", borderBottom: `1px solid ${C.border}20` }}>{l.label}</a>
+              ))}
+            </div>
+          )}
+        </>
+      ) : (
+        <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
+          {links.map(l => (
+            <a key={l.page} onClick={(e) => { e.preventDefault(); nav(l.page); }} href="#" style={{ color: page === l.page ? C.t1 : C.t3, fontSize: 13, fontWeight: 500, textDecoration: "none", letterSpacing: "0.02em", transition: "color 0.2s", cursor: "pointer" }} onMouseOver={e => e.target.style.color = C.t1} onMouseOut={e => { if (page !== l.page) e.target.style.color = C.t3; }}>{l.label}</a>
+          ))}
+          <a href={APP_URL} target="_blank" rel="noopener noreferrer" style={{ background: C.fox, color: C.night, padding: "8px 20px", borderRadius: 8, fontSize: 13, fontWeight: 600, textDecoration: "none", transition: "background 0.2s" }} onMouseOver={e => e.target.style.background = C.foxLight} onMouseOut={e => e.target.style.background = C.fox}>Login</a>
+        </div>
+      )}
     </nav>
   );
 }
@@ -102,17 +159,18 @@ function Nav({ page, setPage }) {
 // FOOTER
 // ═══════════════════════════════════════════════════
 function Footer({ setPage }) {
+  const mobile = useMobile();
   const nl = (pg) => (e) => { e.preventDefault(); setPage(pg); window.scrollTo(0, 0); };
   return (
-    <footer style={{ padding: "64px 48px", borderTop: `1px solid ${C.border}`, background: C.night }}>
-      <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+    <footer style={{ padding: mobile ? "48px 20px" : "64px 48px", borderTop: `1px solid ${C.border}`, background: C.night }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", flexDirection: mobile ? "column" : "row", justifyContent: "space-between", alignItems: mobile ? "flex-start" : "flex-start", gap: mobile ? 40 : 0 }}>
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12, cursor: "pointer" }} onClick={nl("home")}>
             <Mark size={24} /><span style={{ fontSize: 16, fontWeight: 600 }}>Foxtail</span>
           </div>
           <div style={{ fontFamily: "'Manrope', sans-serif", fontWeight: 300, fontSize: 9, letterSpacing: "0.3em", textTransform: "uppercase", color: C.t4 }}>Detect · Alert · Protect</div>
         </div>
-        <div style={{ display: "flex", gap: 48 }}>
+        <div style={{ display: "flex", gap: mobile ? 32 : 48, flexWrap: "wrap" }}>
           <div>
             <div style={{ fontSize: 11, fontWeight: 600, color: C.t3, letterSpacing: "0.08em", marginBottom: 16 }}>PRODUCT</div>
             {[["Product", "home"], ["Pricing", "pricing"], ["Find a Distributor", "distributors"]].map(([t, p]) => (
@@ -132,7 +190,7 @@ function Footer({ setPage }) {
           </div>
         </div>
       </div>
-      <div style={{ maxWidth: 1100, margin: "48px auto 0", paddingTop: 32, borderTop: `1px solid ${C.border}`, display: "flex", justifyContent: "space-between", fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: C.t4 }}>
+      <div style={{ maxWidth: 1100, margin: "48px auto 0", paddingTop: 32, borderTop: `1px solid ${C.border}`, display: "flex", flexDirection: mobile ? "column" : "row", justifyContent: "space-between", gap: mobile ? 8 : 0, fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: C.t4 }}>
         <span>© 2026 Foxtail. All rights reserved.</span>
         <span>Brisbane, Australia</span>
       </div>
@@ -146,9 +204,11 @@ function Footer({ setPage }) {
 // ═══════════════════════════════════════════════════
 function HomePage({ setPage }) {
   const [scrollY, setScrollY] = useState(0);
+  const mobile = useMobile();
   useEffect(() => { const h = () => setScrollY(window.scrollY); window.addEventListener("scroll", h, { passive: true }); return () => window.removeEventListener("scroll", h); }, []);
   const heroOpacity = Math.max(0, 1 - scrollY / 600);
   const [statsRef, statsVisible] = useReveal(0.2);
+  const px = mobile ? "20px" : "48px";
 
   const features = [
     { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>), title: "AI-Powered Detection", desc: "Computer vision counts every person who walks through your door. If more people enter than cards scanned, Foxtail flags it instantly." },
@@ -162,7 +222,7 @@ function HomePage({ setPage }) {
   return (
     <>
       {/* HERO */}
-      <section style={{ position: "relative", minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "120px 24px 80px", overflow: "hidden" }}>
+      <section className="fx-hero" style={{ position: "relative", minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "120px 24px 80px", overflow: "hidden" }}>
         <GridPattern />
         <GlowOrb x="50%" y="35%" size={900} color={C.fox} opacity={0.04} />
         <GlowOrb x="30%" y="65%" size={600} color={C.green} opacity={0.02} />
@@ -179,20 +239,20 @@ function HomePage({ setPage }) {
             </p>
           </Reveal>
           <Reveal delay={0.45}>
-            <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
+            <div className="fx-hero-buttons" style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
               <a href="#" onClick={e => { e.preventDefault(); document.getElementById("hiw")?.scrollIntoView({ behavior: "smooth" }); }} style={{ background: C.fox, color: C.night, padding: "14px 32px", borderRadius: 10, fontSize: 15, fontWeight: 600, textDecoration: "none", transition: "all 0.25s", boxShadow: `0 0 40px ${C.fox}30` }} onMouseOver={e => { e.target.style.background = C.foxLight; e.target.style.boxShadow = `0 0 60px ${C.fox}50`; }} onMouseOut={e => { e.target.style.background = C.fox; e.target.style.boxShadow = `0 0 40px ${C.fox}30`; }}>See How It Works</a>
               <a href="#" onClick={e => { e.preventDefault(); setPage("pricing"); window.scrollTo(0, 0); }} style={{ background: "transparent", color: C.t1, padding: "14px 32px", borderRadius: 10, fontSize: 15, fontWeight: 500, textDecoration: "none", border: `1px solid ${C.border}`, transition: "all 0.25s" }} onMouseOver={e => { e.target.style.borderColor = C.t3; e.target.style.background = C.surface; }} onMouseOut={e => { e.target.style.borderColor = C.border; e.target.style.background = "transparent"; }}>View Pricing</a>
             </div>
           </Reveal>
         </div>
-        <div style={{ position: "absolute", bottom: 32, left: "50%", transform: "translateX(-50%)", display: "flex", flexDirection: "column", alignItems: "center", gap: 8, opacity: heroOpacity * 0.5 }}>
+        <div className="fx-scroll-indicator" style={{ position: "absolute", bottom: 32, left: "50%", transform: "translateX(-50%)", display: "flex", flexDirection: "column", alignItems: "center", gap: 8, opacity: heroOpacity * 0.5 }}>
           <div style={{ width: 1, height: 40, background: `linear-gradient(to bottom, transparent, ${C.t3})` }} />
           <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: C.t3, letterSpacing: "0.15em" }}>SCROLL</span>
         </div>
       </section>
 
       {/* THE PROBLEM */}
-      <section style={{ position: "relative", padding: "120px 48px", borderTop: `1px solid ${C.border}`, background: C.forest, overflow: "hidden" }}>
+      <section className="fx-section" style={{ position: "relative", padding: "120px 48px", borderTop: `1px solid ${C.border}`, background: C.forest, overflow: "hidden" }}>
         <GlowOrb x="70%" y="40%" size={600} color={C.red} opacity={0.025} />
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <Reveal>
@@ -200,7 +260,7 @@ function HomePage({ setPage }) {
             <h2 style={{ fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.02em", marginBottom: 20, maxWidth: 600, lineHeight: 1.1 }}>Your access control stops at the card reader.</h2>
             <p style={{ fontSize: 16, color: C.t2, marginBottom: 64, maxWidth: 520, lineHeight: 1.8 }}>Someone scans their card and holds the door. Two, three, four people walk through on a single scan. Your system records one entry. You have no idea the others were even there.</p>
           </Reveal>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
+          <div className="fx-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
             {[
               { stat: "47%", label: "of gym members have witnessed tailgating at their club" },
               { stat: "3–5×", label: "revenue lost per tailgated entry vs a monthly membership" },
@@ -218,7 +278,7 @@ function HomePage({ setPage }) {
       </section>
 
       {/* WHAT YOU GET */}
-      <section style={{ position: "relative", padding: "120px 48px", overflow: "hidden" }}>
+      <section className="fx-section" style={{ position: "relative", padding: "120px 48px", overflow: "hidden" }}>
         <GlowOrb x="80%" y="20%" size={700} color={C.fox} opacity={0.03} />
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <Reveal>
@@ -226,7 +286,7 @@ function HomePage({ setPage }) {
             <h2 style={{ fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.02em", marginBottom: 12, maxWidth: 550 }}>A complete detection system.<br /><span style={{ color: C.fox }}>Ready to go.</span></h2>
             <p style={{ fontSize: 16, color: C.t2, marginBottom: 64, maxWidth: 480, lineHeight: 1.7 }}>Dedicated AI cameras, on-site hardware, cloud dashboard, and real-time alerts — everything included in one package.</p>
           </Reveal>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
+          <div className="fx-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
             {features.map((f, i) => (
               <Reveal key={i} delay={i * 0.08}>
                 <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: "32px 28px", transition: "border-color 0.3s, background 0.3s", height: "100%", display: "flex", flexDirection: "column" }} onMouseOver={e => { e.currentTarget.style.borderColor = C.borderLight; e.currentTarget.style.background = C.card; }} onMouseOut={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.background = C.surface; }}>
@@ -241,7 +301,7 @@ function HomePage({ setPage }) {
       </section>
 
       {/* HOW IT WORKS */}
-      <section id="hiw" style={{ position: "relative", padding: "120px 48px", background: `linear-gradient(180deg, ${C.night} 0%, ${C.forest} 50%, ${C.night} 100%)`, borderTop: `1px solid ${C.border}`, overflow: "hidden" }}>
+      <section id="hiw" className="fx-section" style={{ position: "relative", padding: "120px 48px", background: `linear-gradient(180deg, ${C.night} 0%, ${C.forest} 50%, ${C.night} 100%)`, borderTop: `1px solid ${C.border}`, overflow: "hidden" }}>
         <GlowOrb x="20%" y="50%" size={800} color={C.cyan} opacity={0.025} />
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <Reveal>
@@ -249,8 +309,8 @@ function HomePage({ setPage }) {
             <h2 style={{ fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.02em", marginBottom: 12, maxWidth: 550 }}>AI that counts people,<br /><span style={{ color: C.fox }}>not just card swipes.</span></h2>
             <p style={{ fontSize: 16, color: C.t2, marginBottom: 80, maxWidth: 520, lineHeight: 1.7 }}>Two dedicated cameras are installed at each door. An on-site AI processor analyses the video feed in real-time — counting every person who enters and comparing that to legitimate scans. If the numbers don't match, you get an alert with video proof.</p>
           </Reveal>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 0, position: "relative" }}>
-            <div style={{ position: "absolute", top: 28, left: "12.5%", right: "12.5%", height: 1, background: `linear-gradient(90deg, transparent, ${C.border} 10%, ${C.border} 90%, transparent)`, zIndex: 0 }} />
+          <div className="fx-grid-4" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 0, position: "relative" }}>
+            <div className="fx-hiw-line" style={{ position: "absolute", top: 28, left: "12.5%", right: "12.5%", height: 1, background: `linear-gradient(90deg, transparent, ${C.border} 10%, ${C.border} 90%, transparent)`, zIndex: 0 }} />
             {[
               { num: "01", title: "Cameras watch the door", desc: "Two dedicated AI cameras are installed at each access point — one on each side of the door." },
               { num: "02", title: "AI counts every person", desc: "Computer vision detects and tracks every individual who passes through, in real-time." },
@@ -270,8 +330,8 @@ function HomePage({ setPage }) {
       </section>
 
       {/* DASHBOARD PREVIEW */}
-      <section style={{ position: "relative", padding: "120px 48px", borderTop: `1px solid ${C.border}` }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}>
+      <section className="fx-section" style={{ position: "relative", padding: "120px 48px", borderTop: `1px solid ${C.border}` }}>
+        <div className="fx-grid-2-equal" style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}>
           <Reveal>
             <div>
               <SectionLabel>Your Dashboard</SectionLabel>
@@ -321,8 +381,8 @@ function HomePage({ setPage }) {
       </section>
 
       {/* STATS */}
-      <section ref={statsRef} style={{ padding: "56px 48px", borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}`, background: C.forest }}>
-        <div style={{ maxWidth: 900, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 32, textAlign: "center" }}>
+      <section ref={statsRef} className="fx-section" style={{ padding: "56px 48px", borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}`, background: C.forest }}>
+        <div className="fx-stat-grid" style={{ maxWidth: 900, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 32, textAlign: "center" }}>
           {[
             { val: 25, suf: " seconds", label: "From incident to your inbox" },
             { val: 24, suf: "/7", label: "Continuous AI monitoring" },
@@ -339,14 +399,14 @@ function HomePage({ setPage }) {
       </section>
 
       {/* CTA */}
-      <section style={{ position: "relative", padding: "100px 48px", textAlign: "center", overflow: "hidden", background: `linear-gradient(180deg, ${C.night} 0%, ${C.forest} 50%, ${C.night} 100%)` }}>
+      <section className="fx-section" style={{ position: "relative", padding: "100px 48px", textAlign: "center", overflow: "hidden", background: `linear-gradient(180deg, ${C.night} 0%, ${C.forest} 50%, ${C.night} 100%)` }}>
         <GlowOrb x="50%" y="50%" size={600} color={C.fox} opacity={0.04} />
         <div style={{ position: "relative", zIndex: 1, maxWidth: 550, margin: "0 auto" }}>
           <Reveal>
             <Mark size={44} />
             <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: 700, letterSpacing: "-0.02em", marginTop: 20, marginBottom: 14, lineHeight: 1.15 }}>Ready to protect your doors?</h2>
             <p style={{ fontSize: 15, color: C.t2, marginBottom: 32, lineHeight: 1.7 }}>Find a local distributor or get in touch to learn more.</p>
-            <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
+            <div className="fx-hero-buttons" style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
               <a href="#" onClick={e => { e.preventDefault(); setPage("distributors"); window.scrollTo(0, 0); }} style={{ background: C.fox, color: C.night, padding: "14px 32px", borderRadius: 10, fontSize: 15, fontWeight: 600, textDecoration: "none", transition: "all 0.25s", boxShadow: `0 0 40px ${C.fox}30` }} onMouseOver={e => { e.target.style.background = C.foxLight; }} onMouseOut={e => { e.target.style.background = C.fox; }}>Find a Distributor</a>
               <a href="#" onClick={e => { e.preventDefault(); setPage("contact"); window.scrollTo(0, 0); }} style={{ background: "transparent", color: C.t1, padding: "14px 32px", borderRadius: 10, fontSize: 15, fontWeight: 500, textDecoration: "none", border: `1px solid ${C.border}`, transition: "all 0.25s" }} onMouseOver={e => { e.target.style.borderColor = C.t3; e.target.style.background = C.surface; }} onMouseOut={e => { e.target.style.borderColor = C.border; e.target.style.background = "transparent"; }}>Contact Us</a>
             </div>
@@ -396,7 +456,7 @@ function PricingPage({ setPage }) {
       </section>
 
       {/* FAQ */}
-      <section style={{ padding: "80px 48px 120px", borderTop: `1px solid ${C.border}`, background: C.forest }}>
+      <section className="fx-section" style={{ padding: "80px 48px 120px", borderTop: `1px solid ${C.border}`, background: C.forest }}>
         <div style={{ maxWidth: 640, margin: "0 auto" }}>
           <Reveal><SectionLabel>FAQ</SectionLabel></Reveal>
           {[
@@ -429,7 +489,7 @@ function AboutPage() {
     <>
       <PageHero label="About" title={<>Built by people who<br /><span style={{ color: C.fox }}>know access control.</span></>} subtitle="Foxtail was born from years of hands-on experience installing access control systems in gyms and facilities across Australia. We saw the gap — and built the solution." />
 
-      <section style={{ padding: "0 48px 120px" }}>
+      <section className="fx-section" style={{ padding: "0 48px 120px" }}>
         <div style={{ maxWidth: 680, margin: "0 auto" }}>
           <Reveal>
             <div style={{ display: "flex", flexDirection: "column", gap: 40 }}>
@@ -448,7 +508,7 @@ function AboutPage() {
         </div>
       </section>
 
-      <section style={{ padding: "80px 48px 100px", borderTop: `1px solid ${C.border}`, background: C.forest }}>
+      <section className="fx-section" style={{ padding: "80px 48px 100px", borderTop: `1px solid ${C.border}`, background: C.forest }}>
         <div style={{ maxWidth: 680, margin: "0 auto", textAlign: "center" }}>
           <Reveal>
             <SectionLabel>Company</SectionLabel>
@@ -479,7 +539,7 @@ function DistributorsPage() {
     <>
       <PageHero label="Find a Distributor" title={<>Get Foxtail installed<br /><span style={{ color: C.fox }}>at your facility.</span></>} subtitle="Foxtail systems are installed by authorised distributors. Enter your location to find the closest one." />
 
-      <section style={{ padding: "0 48px 120px" }}>
+      <section className="fx-section" style={{ padding: "0 48px 120px" }}>
         <div style={{ maxWidth: 560, margin: "0 auto" }}>
           <Reveal>
             <div style={{ display: "flex", gap: 8, marginBottom: 24 }}>
@@ -517,7 +577,7 @@ function DistributorsPage() {
       </section>
 
       {/* Become a distributor */}
-      <section style={{ position: "relative", padding: "80px 48px 100px", borderTop: `1px solid ${C.border}`, background: C.forest, textAlign: "center", overflow: "hidden" }}>
+      <section className="fx-section" style={{ position: "relative", padding: "80px 48px 100px", borderTop: `1px solid ${C.border}`, background: C.forest, textAlign: "center", overflow: "hidden" }}>
         <GlowOrb x="50%" y="50%" size={500} color={C.fox} opacity={0.03} />
         <div style={{ position: "relative", zIndex: 1, maxWidth: 500, margin: "0 auto" }}>
           <Reveal>
@@ -552,8 +612,8 @@ function ContactPage({ setPage }) {
     <>
       <PageHero label="Contact" title={<>Get in touch.</>} subtitle="Whether you're a facility owner looking for a quote, or a security professional interested in distributing Foxtail — we'd love to hear from you." />
 
-      <section style={{ padding: "0 48px 120px" }}>
-        <div style={{ maxWidth: 900, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64 }}>
+      <section className="fx-section" style={{ padding: "0 48px 120px" }}>
+        <div className="fx-contact-grid" style={{ maxWidth: 900, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64 }}>
           <Reveal>
             <div>
               <h3 style={{ fontSize: 18, fontWeight: 600, marginBottom: 24 }}>Send us a message</h3>
@@ -618,9 +678,9 @@ function BecomeDistributorPage({ setPage }) {
     <>
       <PageHero label="Become a Distributor" title={<>Grow your business with<br /><span style={{ color: C.fox }}>recurring revenue.</span></>} subtitle="Join the Foxtail distributor network. Install our AI anti-tailgating systems for your clients and earn ongoing monthly income from every door." />
 
-      <section style={{ padding: "0 48px 100px" }}>
+      <section className="fx-section" style={{ padding: "0 48px 100px" }}>
         <div style={{ maxWidth: 1000, margin: "0 auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginBottom: 80 }}>
+          <div className="fx-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginBottom: 80 }}>
             {[
               { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" /></svg>), title: "Turnkey Product", desc: "Everything is built for you — hardware kits, software, cloud platform, setup wizard. You sell it, we handle the tech." },
               { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><circle cx="12" cy="12" r="10" /><path d="M16 8l-4 4-4-4" /><path d="M16 16l-4-4-4 4" /></svg>), title: "New Revenue Stream", desc: "Add AI anti-tailgating to your product offering. A proven solution your clients are already asking for — you just need to sell it." },
@@ -669,7 +729,7 @@ function BecomeDistributorPage({ setPage }) {
       </section>
 
       {/* CTA */}
-      <section style={{ position: "relative", padding: "80px 48px 100px", borderTop: `1px solid ${C.border}`, background: C.forest, textAlign: "center", overflow: "hidden" }}>
+      <section className="fx-section" style={{ position: "relative", padding: "80px 48px 100px", borderTop: `1px solid ${C.border}`, background: C.forest, textAlign: "center", overflow: "hidden" }}>
         <GlowOrb x="50%" y="50%" size={600} color={C.fox} opacity={0.04} />
         <div style={{ position: "relative", zIndex: 1, maxWidth: 520, margin: "0 auto" }}>
           <Reveal>
@@ -704,6 +764,7 @@ export default function FoxtailWebsite() {
 
   return (
     <div style={{ background: C.night, color: C.t1, fontFamily: "'Space Grotesk', sans-serif", overflowX: "hidden", minHeight: "100vh" }}>
+      <style>{RESPONSIVE_CSS}</style>
       <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&family=Manrope:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
       <Nav page={page} setPage={setPage} />
       {renderPage()}

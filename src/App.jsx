@@ -211,7 +211,7 @@ function HomePage({ setPage }) {
   const px = mobile ? "20px" : "48px";
 
   const features = [
-    { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>), title: "AI-Powered Detection", desc: "Computer vision counts every person who walks through your door. If more people enter than cards scanned, Foxtail flags it instantly." },
+    { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>), title: "AI-Powered Detection", desc: "Computer vision watches both sides of every door. Whether someone tailgates, gets let in from inside, or walks through an unsecured entrance — Foxtail counts every person and flags every unauthorised entry instantly." },
     { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" /></svg>), title: "Video Evidence on Every Alert", desc: "Every alert comes with a 20-second dual-camera video clip and snapshot. See exactly what happened — not just that something happened." },
     { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 0 1-3.46 0" /></svg>), title: "Alerts Straight to Your Inbox", desc: "Get an email within seconds of an incident — complete with camera footage. No app to check, no dashboard to watch. It comes to you." },
     { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>), title: "Detects Propped Doors", desc: "Door left open or wedged? Foxtail recognises the pattern of continuous unscanned entries and sends a separate door-ajar alert." },
@@ -235,7 +235,7 @@ function HomePage({ setPage }) {
           </Reveal>
           <Reveal delay={0.3}>
             <p style={{ fontSize: "clamp(16px, 2vw, 20px)", color: C.t2, fontWeight: 400, maxWidth: 540, margin: "0 auto 40px", lineHeight: 1.7 }}>
-              AI-powered detection that watches your doors 24/7 and sends you video evidence every time someone enters without scanning.
+              AI-powered detection that watches your doors 24/7 — catching tailgaters, people being let in from inside, and every other unauthorised entry. With video evidence sent straight to your inbox.
             </p>
           </Reveal>
           <Reveal delay={0.45}>
@@ -257,14 +257,15 @@ function HomePage({ setPage }) {
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <Reveal>
             <SectionLabel>The Problem</SectionLabel>
-            <h2 style={{ fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.02em", marginBottom: 20, maxWidth: 600, lineHeight: 1.1 }}>Your access control stops at the card reader.</h2>
-            <p style={{ fontSize: 16, color: C.t2, marginBottom: 64, maxWidth: 520, lineHeight: 1.8 }}>Someone scans their card and holds the door. Two, three, four people walk through on a single scan. Your system records one entry. You have no idea the others were even there.</p>
+            <h2 style={{ fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.02em", marginBottom: 20, maxWidth: 600, lineHeight: 1.1 }}>Your access control has a blind spot.</h2>
+            <p style={{ fontSize: 16, color: C.t2, marginBottom: 24, maxWidth: 560, lineHeight: 1.8 }}>Someone scans their card and holds the door. Two, three, four people walk through on a single scan. Your system records one entry. You have no idea the others were even there.</p>
+            <p style={{ fontSize: 16, color: C.t2, marginBottom: 64, maxWidth: 560, lineHeight: 1.8 }}>But it gets worse. A member walks up to the door from <em style={{ color: C.t1, fontStyle: "italic" }}>inside</em>, opens it, and lets someone in. No card scan ever happens. Your access control system sees nothing — because nothing triggered it. <span style={{ color: C.fox, fontWeight: 500 }}>Foxtail sees everything.</span></p>
           </Reveal>
           <div className="fx-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
             {[
               { stat: "47%", label: "of gym members have witnessed tailgating at their club" },
               { stat: "3–5×", label: "revenue lost per tailgated entry vs a monthly membership" },
-              { stat: "0", label: "existing systems that detect it automatically" },
+              { stat: "0", label: "existing systems that detect someone being let in from inside" },
             ].map((p, i) => (
               <Reveal key={i} delay={i * 0.12}>
                 <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: "40px 32px", textAlign: "center", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
@@ -273,6 +274,67 @@ function HomePage({ setPage }) {
                 </div>
               </Reveal>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* DIFFERENTIATOR */}
+      <section className="fx-section" style={{ position: "relative", padding: "100px 48px", borderTop: `1px solid ${C.border}`, overflow: "hidden" }}>
+        <GlowOrb x="50%" y="50%" size={700} color={C.fox} opacity={0.035} />
+        <div style={{ maxWidth: 900, margin: "0 auto" }}>
+          <Reveal>
+            <div style={{ textAlign: "center", marginBottom: 64 }}>
+              <SectionLabel>The Difference</SectionLabel>
+              <h2 style={{ fontSize: "clamp(28px, 3.5vw, 42px)", fontWeight: 700, letterSpacing: "-0.02em", marginBottom: 16, lineHeight: 1.15 }}>Other systems watch the card reader.<br /><span style={{ color: C.fox }}>Foxtail watches the door.</span></h2>
+              <p style={{ fontSize: 16, color: C.t2, maxWidth: 560, margin: "0 auto", lineHeight: 1.8 }}>Traditional anti-tailgating solutions only trigger when a card is scanned. If no scan happens, they see nothing. Foxtail uses AI cameras on both sides of the door — so it catches every unauthorised entry, regardless of how they got in.</p>
+            </div>
+          </Reveal>
+          <div className="fx-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+            <Reveal>
+              <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: "36px 32px", height: "100%" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={C.red} strokeWidth="1.5" strokeLinecap="round"><circle cx="12" cy="12" r="10" /><line x1="15" y1="9" x2="9" y2="15" /><line x1="9" y1="9" x2="15" y2="15" /></svg>
+                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, fontWeight: 600, color: C.red, letterSpacing: "0.08em" }}>TRADITIONAL SYSTEMS</span>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                  {[
+                    "Rely on card reader events as the trigger",
+                    "Blind to entries where no card is scanned",
+                    "Can't detect someone being let in from inside",
+                    "Only count scans — not actual people",
+                  ].map((item, i) => (
+                    <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                      <span style={{ color: C.red, fontSize: 14, marginTop: 1, flexShrink: 0 }}>—</span>
+                      <span style={{ fontSize: 13, color: C.t2, lineHeight: 1.6 }}>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+            <Reveal delay={0.15}>
+              <div style={{ background: C.surface, border: `1px solid ${C.fox}30`, borderRadius: 16, padding: "36px 32px", height: "100%", position: "relative", overflow: "hidden" }}>
+                <GlowOrb x="80%" y="20%" size={200} color={C.fox} opacity={0.08} />
+                <div style={{ position: "relative", zIndex: 1 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+                    <Mark size={24} />
+                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, fontWeight: 600, color: C.fox, letterSpacing: "0.08em" }}>FOXTAIL AI</span>
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                    {[
+                      "AI cameras watch both sides of the door",
+                      "Detects every person — scanned or not",
+                      "Catches people being let in from inside",
+                      "Counts actual bodies, not card swipes",
+                    ].map((item, i) => (
+                      <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{ marginTop: 2, flexShrink: 0 }}><path d="M5 8 L7 10 L11 6" stroke={C.fox} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                        <span style={{ fontSize: 13, color: C.t1, lineHeight: 1.6, fontWeight: 500 }}>{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -306,15 +368,15 @@ function HomePage({ setPage }) {
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <Reveal>
             <SectionLabel>How It Works</SectionLabel>
-            <h2 style={{ fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.02em", marginBottom: 12, maxWidth: 550 }}>AI that counts people,<br /><span style={{ color: C.fox }}>not just card swipes.</span></h2>
-            <p style={{ fontSize: 16, color: C.t2, marginBottom: 80, maxWidth: 520, lineHeight: 1.7 }}>Two dedicated cameras are installed at each door. An on-site AI processor analyses the video feed in real-time — counting every person who enters and comparing that to legitimate scans. If the numbers don't match, you get an alert with video proof.</p>
+            <h2 style={{ fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.02em", marginBottom: 12, maxWidth: 550 }}>AI that counts people,<br /><span style={{ color: C.fox }}>not just the card reader.</span></h2>
+            <p style={{ fontSize: 16, color: C.t2, marginBottom: 80, maxWidth: 520, lineHeight: 1.7 }}>Two dedicated cameras are installed at each door — one watching the outside, one watching the inside. An on-site AI processor analyses both feeds in real-time, counting every person who enters and comparing that to legitimate scans. If someone tailgates, gets let in from inside, or walks through an unsecured door — you get an alert with video proof.</p>
           </Reveal>
           <div className="fx-grid-4" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 0, position: "relative" }}>
             <div className="fx-hiw-line" style={{ position: "absolute", top: 28, left: "12.5%", right: "12.5%", height: 1, background: `linear-gradient(90deg, transparent, ${C.border} 10%, ${C.border} 90%, transparent)`, zIndex: 0 }} />
             {[
               { num: "01", title: "Cameras watch the door", desc: "Two dedicated AI cameras are installed at each access point — one on each side of the door." },
               { num: "02", title: "AI counts every person", desc: "Computer vision detects and tracks every individual who passes through, in real-time." },
-              { num: "03", title: "Compares to card scans", desc: "The system knows how many people should have entered. More people than scans? That's a tailgate." },
+              { num: "03", title: "Compares to card scans", desc: "The system knows how many people should have entered — and catches entries where no card was scanned at all, like someone being let in from inside." },
               { num: "04", title: "You get the evidence", desc: "An alert with video and a snapshot is emailed to you within seconds. Review it in the dashboard or your inbox." },
             ].map((s, i) => (
               <Reveal key={i} delay={i * 0.15}>
@@ -464,6 +526,7 @@ function PricingPage({ setPage }) {
             { q: "Are there any lock-in contracts?", a: "No. The $99/month monitoring fee is ongoing with no minimum term. If you stop paying, the system goes offline — but there's no cancellation fee or penalty." },
             { q: "What happens if I add more doors later?", a: "Each additional door requires its own camera pair and adds another $99/month to your monitoring. Your distributor can install additional doors at any time." },
             { q: "Do I need an internet connection at the site?", a: "Yes. The system needs a standard internet connection to send alerts and sync with the cloud dashboard. The AI processing itself happens on-site — video is never uploaded to the cloud." },
+            { q: "How is Foxtail different from turnstiles or speed gates?", a: "Turnstiles and speed gates physically block entry, but they're expensive, intrusive, and impractical for most facilities. More importantly, they still rely on a card scan as the trigger. If someone opens the door from inside and lets a friend in — no scan, no detection. Foxtail uses AI cameras on both sides of the door, so it catches every unauthorised entry regardless of how they got in." },
             { q: "Does it work with my existing CCTV?", a: "Foxtail uses its own dedicated camera system optimised for AI detection. This ensures consistent accuracy and means we don't interfere with your existing security setup." },
             { q: "What if I have multiple locations?", a: "The dashboard supports unlimited sites under a single login. You can manage your entire portfolio from one place." },
           ].map((faq, i) => (
@@ -494,7 +557,7 @@ function AboutPage() {
           <Reveal>
             <div style={{ display: "flex", flexDirection: "column", gap: 40 }}>
               {[
-                { title: "The problem we kept seeing", body: "After years of working in access control, one thing was clear: the hardware works perfectly, but people don't always play by the rules. Tailgating — someone following a member through without scanning — is the single biggest gap in access control. We built Foxtail to close it." },
+                { title: "The problem we kept seeing", body: "After years of working in access control, one thing was clear: the hardware works perfectly, but people don't always play by the rules. Tailgating, door holding, and members letting people in from inside — these are the gaps that no access control system was designed to catch. We built Foxtail to close them." },
                 { title: "Why AI, and why on-site", body: "Cloud-based video processing means sending footage off-premises, which raises privacy concerns and adds latency. Foxtail processes everything locally at the site. The AI runs on a compact device right next to the cameras. Your video never leaves the building — and alerts arrive in seconds, not minutes." },
                 { title: "A product, not a project", body: "Foxtail isn't a one-off custom build. It's a product designed for scale — from a single-door gym to a franchise with hundreds of locations. The dashboard manages your entire fleet. The hardware is standardised. The software updates itself. We're building the standard for anti-tailgating detection." },
               ].map((s, i) => (
@@ -683,7 +746,7 @@ function BecomeDistributorPage({ setPage }) {
           <div className="fx-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginBottom: 80 }}>
             {[
               { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" /></svg>), title: "Turnkey Product", desc: "Everything is built for you — hardware kits, software, cloud platform, setup wizard. You sell it, we handle the tech." },
-              { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><circle cx="12" cy="12" r="10" /><path d="M16 8l-4 4-4-4" /><path d="M16 16l-4-4-4 4" /></svg>), title: "New Revenue Stream", desc: "Add AI anti-tailgating to your product offering. A proven solution your clients are already asking for — you just need to sell it." },
+              { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><circle cx="12" cy="12" r="10" /><path d="M16 8l-4 4-4-4" /><path d="M16 16l-4-4-4 4" /></svg>), title: "New Revenue Stream", desc: "Add AI anti-tailgating to your offering. Unlike turnstiles or speed gates, Foxtail catches entries that other systems can't — including people being let in from inside. That's a conversation starter your competitors don't have." },
               { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 00-3-3.87" /><path d="M16 3.13a4 4 0 010 7.75" /></svg>), title: "Full Training & Support", desc: "We train your team on installation and provide ongoing technical support. You're never on your own." },
             ].map((f, i) => (
               <Reveal key={i} delay={i * 0.1}>
@@ -701,7 +764,7 @@ function BecomeDistributorPage({ setPage }) {
               <SectionLabel>What You Get</SectionLabel>
               <div style={{ display: "flex", flexDirection: "column", gap: 20, marginBottom: 60 }}>
                 {[
-                  { label: "A proven product to sell", desc: "AI-powered anti-tailgating detection — a solution your clients need, ready to go" },
+                  { label: "A proven product to sell", desc: "The only anti-tailgating system that catches people being let in from inside — not just traditional tailgating. A real differentiator your clients haven't seen before." },
                   { label: "We handle the platform", desc: "Cloud dashboard, monitoring, software updates, and technical support — all managed by us" },
                   { label: "Pre-staged hardware option", desc: "We can ship hardware kits pre-loaded with software — your techs just mount cameras and run the setup wizard" },
                   { label: "Sales and marketing support", desc: "Co-branded collateral, product sheets, and sales resources to help you close deals" },

@@ -263,9 +263,9 @@ function HomePage({ setPage }) {
           </Reveal>
           <div className="fx-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
             {[
-              { stat: "47%", label: "of gym members have witnessed tailgating at their club" },
+              { stat: "61%", label: "of organisations report tailgating as their #1 access control issue" },
               { stat: "3–5×", label: "revenue lost per tailgated entry vs a monthly membership" },
-              { stat: "0", label: "existing systems that detect someone being let in from inside" },
+              { stat: "1", label: "existing system that detects someone being let in from inside" },
             ].map((p, i) => (
               <Reveal key={i} delay={i * 0.12}>
                 <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: "40px 32px", textAlign: "center", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>

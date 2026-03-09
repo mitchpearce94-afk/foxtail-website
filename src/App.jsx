@@ -264,12 +264,12 @@ function HomePage({ setPage }) {
           <div className="fx-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
             {[
               { stat: "61%", label: "of organisations report tailgating as their #1 access control issue" },
-              { stat: "3–5×", label: "revenue lost per tailgated entry vs a monthly membership" },
+              { stat: "Thousands", label: "in revenue lost every year from unpaid entries and membership sharing" },
               { stat: "1", label: "existing system that detects someone being let in from inside" },
             ].map((p, i) => (
               <Reveal key={i} delay={i * 0.12}>
                 <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: "40px 32px", textAlign: "center", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 44, fontWeight: 700, color: i === 2 ? C.red : C.fox, marginBottom: 12, lineHeight: 1 }}>{p.stat}</div>
+                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 44, fontWeight: 700, color: i === 2 ? C.green : C.fox, marginBottom: 12, lineHeight: 1 }}>{p.stat}</div>
                   <div style={{ fontSize: 14, color: C.t2, lineHeight: 1.6 }}>{p.label}</div>
                 </div>
               </Reveal>

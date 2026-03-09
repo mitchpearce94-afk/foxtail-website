@@ -269,7 +269,7 @@ function HomePage({ setPage }) {
             ].map((p, i) => (
               <Reveal key={i} delay={i * 0.12}>
                 <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: "40px 32px", textAlign: "center", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 44, fontWeight: 700, color: i === 2 ? C.green : C.fox, marginBottom: 12, lineHeight: 1 }}>{p.stat}</div>
+                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 44, fontWeight: 700, color: i === 2 ? C.fox : C.fox, marginBottom: 12, lineHeight: 1 }}>{p.stat}</div>
                   <div style={{ fontSize: 14, color: C.t2, lineHeight: 1.6 }}>{p.label}</div>
                 </div>
               </Reveal>

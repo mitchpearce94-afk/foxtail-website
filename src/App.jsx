@@ -264,7 +264,7 @@ function HomePage({ setPage }) {
           <div className="fx-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
             {[
               { stat: "61%", label: "of organisations report tailgating as their #1 access control issue" },
-              { stat: "Thousands", label: "in revenue lost every year from unpaid entries and membership sharing" },
+              { stat: "$1,000's", label: "in revenue lost every year from unpaid entries and membership sharing" },
               { stat: "1", label: "existing system that detects someone being let in from inside" },
             ].map((p, i) => (
               <Reveal key={i} delay={i * 0.12}>

@@ -940,15 +940,15 @@ function DistributorApplicationForm() {
 function BecomeDistributorPage({ setPage }) {
   return (
     <>
-      <PageHero label="Become a Distributor" title={<>Grow your business with<br /><span style={{ color: C.fox }}>recurring revenue.</span></>} subtitle="Join the Foxtail distributor network. Install our AI anti-tailgating systems for your clients and earn ongoing monthly income from every door." />
+      <PageHero label="Become a Distributor" title={<>Sell, install,<br /><span style={{ color: C.fox }}>grow your business.</span></>} subtitle="Add AI-powered security to your product range. We provide the hardware, software, and support — you sell and install it for your clients." />
 
       <section className="fx-section" style={{ padding: "0 48px 100px" }}>
         <div style={{ maxWidth: 1000, margin: "0 auto" }}>
           <div className="fx-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginBottom: 80 }}>
             {[
-              { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" /></svg>), title: "Turnkey Product", desc: "Everything is built for you — hardware kits, software, cloud platform, setup wizard. You sell it, we handle the tech." },
-              { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><circle cx="12" cy="12" r="10" /><path d="M16 8l-4 4-4-4" /><path d="M16 16l-4-4-4 4" /></svg>), title: "New Revenue Stream", desc: "Add AI anti-tailgating to your offering. Unlike turnstiles or speed gates, Foxtail catches entries that other systems can't — including people being let in from inside. That's a conversation starter your competitors don't have." },
-              { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 00-3-3.87" /><path d="M16 3.13a4 4 0 010 7.75" /></svg>), title: "Full Training & Support", desc: "We train your team on installation and provide ongoing technical support. You're never on your own." },
+              { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" /></svg>), title: "Turnkey Product, Real Margin", desc: "Buy hardware kits at wholesale and sell at recommended retail. You keep the margin on every install — no revenue share, no ongoing obligations." },
+              { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><circle cx="12" cy="12" r="10" /><path d="M16 8l-4 4-4-4" /><path d="M16 16l-4-4-4 4" /></svg>), title: "A Product Your Competitors Don't Have", desc: "Foxtail catches entries that other systems can't — including people being let in from inside. That's a conversation starter no one else in your market has." },
+              { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 00-3-3.87" /><path d="M16 3.13a4 4 0 010 7.75" /></svg>), title: "Full Training & Support", desc: "We train your team on installation and provide ongoing technical support. You sell and install — we handle the software, subscriptions, and customer platform." },
             ].map((f, i) => (
               <Reveal key={i} delay={i * 0.1}>
                 <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: "32px 28px", height: "100%", display: "flex", flexDirection: "column" }}>
@@ -966,7 +966,7 @@ function BecomeDistributorPage({ setPage }) {
               <div style={{ display: "flex", flexDirection: "column", gap: 20, marginBottom: 60 }}>
                 {[
                   { label: "A proven product to sell", desc: "The only anti-tailgating system that catches people being let in from inside — not just traditional tailgating. A real differentiator your clients haven't seen before." },
-                  { label: "We handle the platform", desc: "Cloud dashboard, monitoring, software updates, and technical support — all managed by us" },
+                  { label: "No ongoing obligations", desc: "We handle the cloud dashboard, software subscriptions, and end-customer support. You sell and install — that's it." },
                   { label: "Pre-staged hardware option", desc: "We can ship hardware kits pre-loaded with software — your techs just mount cameras and run the setup wizard" },
                   { label: "Sales and marketing support", desc: "Co-branded collateral, product sheets, and sales resources to help you close deals" },
                   { label: "Full training", desc: "We train your team on the product, installation process, and how to demo it to clients" },

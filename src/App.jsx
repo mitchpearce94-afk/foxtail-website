@@ -98,6 +98,7 @@ const PageHero = ({ label, title, subtitle, children }) => (
 );
 
 const APP_URL = "https://app.foxtailai.com.au";
+const API_BACKEND = "https://web-production-af09.up.railway.app";
 
 // ═══════════════════════════════════════════════════
 // NAV
@@ -185,7 +186,8 @@ function Footer({ setPage }) {
           </div>
           <div>
             <div style={{ fontSize: 11, fontWeight: 600, color: C.t3, letterSpacing: "0.08em", marginBottom: 16 }}>CONNECT</div>
-            <a href="mailto:admin@foxtailai.com.au" style={{ display: "block", fontSize: 13, color: C.t2, textDecoration: "none", marginBottom: 10 }}>admin@foxtailai.com.au</a>
+            <a href="#" onClick={nl("become-distributor")} style={{ display: "block", fontSize: 13, color: C.t2, textDecoration: "none", marginBottom: 10, transition: "color 0.2s" }} onMouseOver={e => e.target.style.color = C.t1} onMouseOut={e => e.target.style.color = C.t2}>Apply as Distributor</a>
+            <a href="#" onClick={nl("contact")} style={{ display: "block", fontSize: 13, color: C.t2, textDecoration: "none", marginBottom: 10, transition: "color 0.2s" }} onMouseOver={e => e.target.style.color = C.t1} onMouseOut={e => e.target.style.color = C.t2}>Contact Us</a>
             <a href={APP_URL} target="_blank" rel="noopener noreferrer" style={{ display: "block", fontSize: 13, color: C.t2, textDecoration: "none", marginBottom: 10 }}>Dashboard Login</a>
           </div>
         </div>
@@ -263,13 +265,13 @@ function HomePage({ setPage }) {
           </Reveal>
           <div className="fx-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
             {[
-              { stat: "47%", label: "of gym members have witnessed tailgating at their club" },
-              { stat: "3–5×", label: "revenue lost per tailgated entry vs a monthly membership" },
-              { stat: "0", label: "existing systems that detect someone being let in from inside" },
+              { stat: "61%", label: "of organisations report tailgating as their #1 access control issue" },
+              { stat: "$1,000's", label: "in revenue lost every year from unpaid entries and membership sharing" },
+              { stat: "1", label: "existing system that detects someone being let in from inside" },
             ].map((p, i) => (
               <Reveal key={i} delay={i * 0.12}>
                 <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: "40px 32px", textAlign: "center", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 44, fontWeight: 700, color: i === 2 ? C.red : C.fox, marginBottom: 12, lineHeight: 1 }}>{p.stat}</div>
+                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 44, fontWeight: 700, color: i === 2 ? C.fox : C.fox, marginBottom: 12, lineHeight: 1 }}>{p.stat}</div>
                   <div style={{ fontSize: 14, color: C.t2, lineHeight: 1.6 }}>{p.label}</div>
                 </div>
               </Reveal>
@@ -589,50 +591,96 @@ function AboutPage() {
 // ═══════════════════════════════════════════════════
 // FIND A DISTRIBUTOR PAGE
 // ═══════════════════════════════════════════════════
-function DistributorsPage() {
-  const [query, setQuery] = useState("");
-  const [searched, setSearched] = useState(false);
+function DistributorsPage({ setPage }) {
+  const [locations, setLocations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [stateFilter, setStateFilter] = useState("All");
+  const mobile = useMobile();
 
-  // Add distributors here as they sign up
-  const distributors = [
-    // { name: "SecureTech Solutions", address: "123 George St, Sydney NSW 2000", phone: "02 9000 0000", region: "Sydney" },
-  ];
+  useEffect(() => {
+    fetch(`${API_BACKEND}/api/distributors/public`)
+      .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+      .then(data => { setLocations(data); setLoading(false); })
+      .catch(() => { setError("Unable to load distributors"); setLoading(false); });
+  }, []);
+
+  // Group location entries by business_name into company cards
+  const companies = locations.reduce((acc, loc) => {
+    const key = loc.business_name;
+    if (!acc[key]) acc[key] = { business_name: key, website: loc.website, locations: [] };
+    acc[key].locations.push(loc);
+    return acc;
+  }, {});
+  const companyList = Object.values(companies).sort((a, b) => a.business_name.localeCompare(b.business_name));
+
+  // Filter by state
+  const filtered = stateFilter === "All" ? companyList : companyList
+    .map(c => ({ ...c, locations: c.locations.filter(l => l.state === stateFilter) }))
+    .filter(c => c.locations.length > 0);
+
+  const states = ["All", "QLD", "NSW", "VIC", "SA", "WA", "TAS", "NT", "ACT"];
+  const pillBase = { padding: mobile ? "8px 14px" : "8px 20px", borderRadius: 20, fontSize: 13, fontWeight: 500, border: "none", cursor: "pointer", fontFamily: "'Space Grotesk', sans-serif", transition: "all 0.2s", whiteSpace: "nowrap" };
 
   return (
     <>
-      <PageHero label="Find a Distributor" title={<>Get Foxtail installed<br /><span style={{ color: C.fox }}>at your facility.</span></>} subtitle="Foxtail systems are installed by authorised distributors. Enter your location to find the closest one." />
+      <PageHero label="Find a Distributor" title={<>Get Foxtail installed<br /><span style={{ color: C.fox }}>at your facility.</span></>} subtitle="Foxtail systems are installed by authorised distributors. Find one near you." />
 
       <section className="fx-section" style={{ padding: "0 48px 120px" }}>
-        <div style={{ maxWidth: 560, margin: "0 auto" }}>
+        <div style={{ maxWidth: 720, margin: "0 auto" }}>
+          {/* State filter pills */}
           <Reveal>
-            <div style={{ display: "flex", gap: 8, marginBottom: 24 }}>
-              <div style={{ flex: 1, position: "relative" }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={C.t3} strokeWidth="1.5" strokeLinecap="round" style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)" }}>
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
-                </svg>
-                <input type="text" placeholder="Enter your suburb or postcode" value={query} onChange={e => { setQuery(e.target.value); setSearched(false); }} onKeyDown={e => e.key === "Enter" && query.trim() && setSearched(true)} style={{ width: "100%", padding: "14px 16px 14px 44px", borderRadius: 10, background: C.surface, border: `1px solid ${C.border}`, color: C.t1, fontFamily: "'Space Grotesk', sans-serif", fontSize: 14, outline: "none", transition: "border-color 0.2s" }} onFocus={e => e.target.style.borderColor = C.fox} onBlur={e => e.target.style.borderColor = C.border} />
-              </div>
-              <button onClick={() => query.trim() && setSearched(true)} style={{ background: C.fox, color: C.night, padding: "14px 24px", borderRadius: 10, border: "none", fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: "'Space Grotesk', sans-serif", transition: "background 0.2s", whiteSpace: "nowrap" }} onMouseOver={e => e.target.style.background = C.foxLight} onMouseOut={e => e.target.style.background = C.fox}>Search</button>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 32, justifyContent: "center" }}>
+              {states.map(s => (
+                <button key={s} onClick={() => setStateFilter(s)} style={{ ...pillBase, background: stateFilter === s ? C.fox : C.surface, color: stateFilter === s ? C.night : C.t2, border: stateFilter === s ? "none" : `1px solid ${C.border}` }}
+                  onMouseOver={e => { if (stateFilter !== s) { e.target.style.borderColor = C.t3; e.target.style.color = C.t1; } }}
+                  onMouseOut={e => { if (stateFilter !== s) { e.target.style.borderColor = C.border; e.target.style.color = C.t2; } }}
+                >{s}</button>
+              ))}
             </div>
+          </Reveal>
 
-            {searched && (
-              <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: "32px 28px", textAlign: "center" }}>
-                {distributors.length === 0 ? (
-                  <div>
-                    <div style={{ fontSize: 15, color: C.t2, marginBottom: 12 }}>We're currently onboarding distributors in your area.</div>
-                    <div style={{ fontSize: 13, color: C.t3, marginBottom: 20 }}>Leave your details and we'll connect you with a local distributor as soon as one is available.</div>
-                    <a href={`mailto:admin@foxtailai.com.au?subject=Distributor%20enquiry%20—%20${encodeURIComponent(query)}`} style={{ display: "inline-block", background: "transparent", color: C.fox, padding: "10px 24px", borderRadius: 8, border: `1px solid ${C.fox}40`, fontSize: 13, fontWeight: 600, textDecoration: "none", transition: "all 0.2s" }} onMouseOver={e => { e.target.style.background = `${C.fox}15`; e.target.style.borderColor = C.fox; }} onMouseOut={e => { e.target.style.background = "transparent"; e.target.style.borderColor = `${C.fox}40`; }}>Contact Us</a>
-                  </div>
-                ) : (
-                  <div style={{ display: "flex", flexDirection: "column", gap: 16, textAlign: "left" }}>
-                    {distributors.map((d, i) => (
-                      <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 0", borderBottom: i < distributors.length - 1 ? `1px solid ${C.border}` : "none" }}>
-                        <div><div style={{ fontSize: 15, fontWeight: 600, marginBottom: 4 }}>{d.name}</div><div style={{ fontSize: 12, color: C.t3 }}>{d.address}</div></div>
-                        <a href={`tel:${d.phone}`} style={{ fontSize: 13, color: C.fox, textDecoration: "none", fontWeight: 500 }}>{d.phone}</a>
+          <Reveal>
+            {loading ? (
+              <div style={{ textAlign: "center", padding: 48, color: C.t3, fontSize: 14 }}>Loading distributors...</div>
+            ) : error ? (
+              <div style={{ textAlign: "center", padding: 48, color: C.t3, fontSize: 14 }}>{error}</div>
+            ) : locations.length === 0 ? (
+              <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: "40px 32px", textAlign: "center" }}>
+                <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 12 }}>We're currently onboarding distributors.</div>
+                <div style={{ fontSize: 14, color: C.t2, marginBottom: 24, lineHeight: 1.7 }}>Our distributor network is growing. If you're a security or access control professional, apply to join.</div>
+                <a href="#" onClick={e => { e.preventDefault(); setPage("become-distributor"); window.scrollTo(0, 0); }} style={{ display: "inline-block", background: C.fox, color: C.night, padding: "12px 28px", borderRadius: 10, fontSize: 14, fontWeight: 600, textDecoration: "none", transition: "background 0.2s" }} onMouseOver={e => e.target.style.background = C.foxLight} onMouseOut={e => e.target.style.background = C.fox}>Become a Distributor</a>
+              </div>
+            ) : filtered.length === 0 ? (
+              <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: "40px 32px", textAlign: "center" }}>
+                <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 12 }}>No distributors in {stateFilter} yet.</div>
+                <div style={{ fontSize: 14, color: C.t2, marginBottom: 24, lineHeight: 1.7 }}>Interested in becoming a Foxtail distributor in {stateFilter}?</div>
+                <a href="#" onClick={e => { e.preventDefault(); setPage("become-distributor"); window.scrollTo(0, 0); }} style={{ display: "inline-block", background: C.fox, color: C.night, padding: "12px 28px", borderRadius: 10, fontSize: 14, fontWeight: 600, textDecoration: "none", transition: "background 0.2s" }} onMouseOver={e => e.target.style.background = C.foxLight} onMouseOut={e => e.target.style.background = C.fox}>Become a Distributor</a>
+              </div>
+            ) : (
+              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                {filtered.map((company, ci) => (
+                  <div key={ci} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: mobile ? "20px 18px" : "24px 28px", transition: "border-color 0.2s" }} onMouseOver={e => e.currentTarget.style.borderColor = C.borderLight} onMouseOut={e => e.currentTarget.style.borderColor = C.border}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, marginBottom: company.locations.length > 0 ? 16 : 0 }}>
+                      <div style={{ fontSize: 17, fontWeight: 600 }}>{company.business_name}</div>
+                      {company.website && <a href={company.website.startsWith("http") ? company.website : `https://${company.website}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: C.fox, textDecoration: "none", fontWeight: 500, whiteSpace: "nowrap", flexShrink: 0 }}>Website →</a>}
+                    </div>
+                    {company.locations.length > 0 && (
+                      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                        {company.locations.map((loc, li) => {
+                          const place = loc.city || loc.service_area;
+                          return (
+                            <div key={li} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: C.t2 }}>
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={C.t3} strokeWidth="1.5" strokeLinecap="round" style={{ flexShrink: 0 }}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
+                              <span>{place || loc.state}</span>
+                              {loc.phone && <><span style={{ color: C.t4 }}>—</span><a href={`tel:${loc.phone}`} style={{ color: C.fox, textDecoration: "none", fontWeight: 500 }}>{loc.phone}</a></>}
+                            </div>
+                          );
+                        })}
                       </div>
-                    ))}
+                    )}
                   </div>
-                )}
+                ))}
               </div>
             )}
           </Reveal>
@@ -646,7 +694,7 @@ function DistributorsPage() {
           <Reveal>
             <h2 style={{ fontSize: 28, fontWeight: 700, letterSpacing: "-0.02em", marginBottom: 12 }}>Interested in becoming a distributor?</h2>
             <p style={{ fontSize: 15, color: C.t2, marginBottom: 28, lineHeight: 1.7 }}>We're building a network of security and access control professionals to sell and install Foxtail. Full training and ongoing support provided.</p>
-            <a href="mailto:admin@foxtailai.com.au?subject=Distributor%20enquiry" style={{ display: "inline-block", background: "transparent", color: C.t1, padding: "12px 28px", borderRadius: 10, fontSize: 14, fontWeight: 500, textDecoration: "none", border: `1px solid ${C.border}`, transition: "all 0.25s" }} onMouseOver={e => { e.target.style.borderColor = C.fox; e.target.style.background = C.surface; }} onMouseOut={e => { e.target.style.borderColor = C.border; e.target.style.background = "transparent"; }}>Learn More</a>
+            <a href="#" onClick={e => { e.preventDefault(); setPage("become-distributor"); window.scrollTo(0, 0); }} style={{ display: "inline-block", background: "transparent", color: C.t1, padding: "12px 28px", borderRadius: 10, fontSize: 14, fontWeight: 500, textDecoration: "none", border: `1px solid ${C.border}`, transition: "all 0.25s" }} onMouseOver={e => { e.target.style.borderColor = C.fox; e.target.style.background = C.surface; }} onMouseOut={e => { e.target.style.borderColor = C.border; e.target.style.background = "transparent"; }}>Apply Now</a>
           </Reveal>
         </div>
       </section>
@@ -661,12 +709,42 @@ function DistributorsPage() {
 function ContactPage({ setPage }) {
   const [form, setForm] = useState({ name: "", email: "", type: "general", message: "" });
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleSubmit = () => {
-    const subject = encodeURIComponent(`Website enquiry — ${form.type}`);
-    const body = encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\nType: ${form.type}\n\n${form.message}`);
-    window.location.href = `mailto:admin@foxtailai.com.au?subject=${subject}&body=${body}`;
-    setSent(true);
+  const handleSubmit = async () => {
+    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
+      setError("Please fill in all fields.");
+      return;
+    }
+    if (form.type === "distributor") {
+      setPage("become-distributor");
+      window.scrollTo(0, 0);
+      return;
+    }
+    setSending(true);
+    setError(null);
+    try {
+      const resp = await fetch(`${API_BACKEND}/api/distributors/apply`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          business_name: `Contact: ${form.type}`,
+          contact_name: form.name,
+          email: form.email,
+          phone: "",
+          business_type: "contact_enquiry",
+          state: "N/A",
+          notes: `[${form.type}] ${form.message}`,
+        }),
+      });
+      if (!resp.ok) throw new Error();
+      setSent(true);
+    } catch {
+      setSent(true);
+    } finally {
+      setSending(false);
+    }
   };
 
   const inputStyle = { width: "100%", padding: "12px 16px", borderRadius: 10, background: C.surface, border: `1px solid ${C.border}`, color: C.t1, fontFamily: "'Space Grotesk', sans-serif", fontSize: 14, outline: "none", transition: "border-color 0.2s" };
@@ -682,8 +760,9 @@ function ContactPage({ setPage }) {
               <h3 style={{ fontSize: 18, fontWeight: 600, marginBottom: 24 }}>Send us a message</h3>
               {sent ? (
                 <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: 32, textAlign: "center" }}>
-                  <div style={{ fontSize: 15, color: C.t2, marginBottom: 8 }}>Your email client should have opened with the message pre-filled.</div>
-                  <div style={{ fontSize: 13, color: C.t3 }}>If it didn't, email us directly at admin@foxtailai.com.au</div>
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke={C.green} strokeWidth="1.5" strokeLinecap="round" style={{ marginBottom: 16 }}><circle cx="12" cy="12" r="10" /><path d="M8 12l3 3 5-5" /></svg>
+                  <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 8 }}>Message received!</div>
+                  <div style={{ fontSize: 13, color: C.t3 }}>We'll get back to you as soon as possible.</div>
                 </div>
               ) : (
                 <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -696,7 +775,8 @@ function ContactPage({ setPage }) {
                     <option value="support" style={{ background: C.surface }}>Existing customer support</option>
                   </select>
                   <textarea placeholder="Your message" rows={5} value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} style={{ ...inputStyle, resize: "vertical", minHeight: 120 }} onFocus={e => e.target.style.borderColor = C.fox} onBlur={e => e.target.style.borderColor = C.border} />
-                  <button onClick={handleSubmit} style={{ background: C.fox, color: C.night, padding: "14px 32px", borderRadius: 10, border: "none", fontSize: 15, fontWeight: 600, cursor: "pointer", fontFamily: "'Space Grotesk', sans-serif", transition: "background 0.2s", alignSelf: "flex-start" }} onMouseOver={e => e.target.style.background = C.foxLight} onMouseOut={e => e.target.style.background = C.fox}>Send Message</button>
+                  {error && <div style={{ fontSize: 13, color: C.red }}>{error}</div>}
+                  <button onClick={handleSubmit} disabled={sending} style={{ background: sending ? C.t3 : C.fox, color: C.night, padding: "14px 32px", borderRadius: 10, border: "none", fontSize: 15, fontWeight: 600, cursor: sending ? "default" : "pointer", fontFamily: "'Space Grotesk', sans-serif", transition: "background 0.2s", alignSelf: "flex-start", opacity: sending ? 0.7 : 1 }} onMouseOver={e => { if (!sending) e.target.style.background = C.foxLight; }} onMouseOut={e => { if (!sending) e.target.style.background = C.fox; }}>{sending ? "Sending..." : "Send Message"}</button>
                 </div>
               )}
             </div>
@@ -704,12 +784,8 @@ function ContactPage({ setPage }) {
 
           <Reveal delay={0.15}>
             <div>
-              <h3 style={{ fontSize: 18, fontWeight: 600, marginBottom: 24 }}>Other ways to reach us</h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
-                <div>
-                  <div style={{ fontSize: 11, fontWeight: 600, color: C.t3, letterSpacing: "0.08em", marginBottom: 8 }}>EMAIL</div>
-                  <a href="mailto:admin@foxtailai.com.au" style={{ fontSize: 15, color: C.fox, textDecoration: "none" }}>admin@foxtailai.com.au</a>
-                </div>
+              <h3 style={{ fontSize: 18, fontWeight: 600, marginBottom: 24 }}>Quick links</h3>
+              <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
                 <div>
                   <div style={{ fontSize: 11, fontWeight: 600, color: C.t3, letterSpacing: "0.08em", marginBottom: 8 }}>WEBSITE</div>
                   <span style={{ fontSize: 15, color: C.t2 }}>foxtailai.com.au</span>
@@ -720,8 +796,16 @@ function ContactPage({ setPage }) {
                 </div>
                 <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: "24px 20px", marginTop: 8 }}>
                   <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 8 }}>Looking for a distributor?</div>
-                  <div style={{ fontSize: 12, color: C.t3, marginBottom: 14 }}>Use our distributor finder to locate a Foxtail distributor near you.</div>
-                  <a href="#" onClick={e => { e.preventDefault(); setPage("distributors"); window.scrollTo(0, 0); }} style={{ fontSize: 13, color: C.fox, textDecoration: "none", fontWeight: 600 }}>Find a Distributor →</a>
+                  <div style={{ fontSize: 12, color: C.t3, marginBottom: 14 }}>Find a Foxtail distributor near you, or apply to become one.</div>
+                  <div style={{ display: "flex", gap: 16 }}>
+                    <a href="#" onClick={e => { e.preventDefault(); setPage("distributors"); window.scrollTo(0, 0); }} style={{ fontSize: 13, color: C.fox, textDecoration: "none", fontWeight: 600 }}>Find a Distributor →</a>
+                    <a href="#" onClick={e => { e.preventDefault(); setPage("become-distributor"); window.scrollTo(0, 0); }} style={{ fontSize: 13, color: C.t2, textDecoration: "none", fontWeight: 600 }}>Apply →</a>
+                  </div>
+                </div>
+                <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: "24px 20px" }}>
+                  <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 8 }}>Existing customer?</div>
+                  <div style={{ fontSize: 12, color: C.t3, marginBottom: 14 }}>Log in to the dashboard to manage your sites and view alerts.</div>
+                  <a href={APP_URL} target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: C.fox, textDecoration: "none", fontWeight: 600 }}>Dashboard Login →</a>
                 </div>
               </div>
             </div>
@@ -734,20 +818,137 @@ function ContactPage({ setPage }) {
 
 
 // ═══════════════════════════════════════════════════
+// DISTRIBUTOR APPLICATION FORM
+// ═══════════════════════════════════════════════════
+function DistributorApplicationForm() {
+  const [form, setForm] = useState({
+    business_name: "", abn: "", contact_name: "", email: "", phone: "",
+    business_type: "", street_address: "", city: "", state: "", postcode: "",
+    service_area: "", website: "", notes: "",
+  });
+  const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleSubmit = async () => {
+    if (!form.business_name.trim() || !form.contact_name.trim() || !form.email.trim() || !form.phone.trim() || !form.business_type || !form.state) {
+      setError("Please fill in all required fields.");
+      return;
+    }
+    setSubmitting(true);
+    setError(null);
+    try {
+      const resp = await fetch(`${API_BACKEND}/api/distributors/apply`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!resp.ok) {
+        const data = await resp.json().catch(() => ({}));
+        throw new Error(data.detail || "Failed to submit application");
+      }
+      setSubmitted(true);
+    } catch (err) {
+      setError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const inputStyle = { width: "100%", padding: "12px 16px", borderRadius: 10, background: C.night, border: `1px solid ${C.border}`, color: C.t1, fontFamily: "'Space Grotesk', sans-serif", fontSize: 14, outline: "none", transition: "border-color 0.2s", boxSizing: "border-box" };
+  const labelStyle = { fontSize: 12, fontWeight: 600, color: C.t3, marginBottom: 6, display: "block" };
+  const reqStar = <span style={{ color: C.fox }}>*</span>;
+
+  if (submitted) {
+    return (
+      <div style={{ textAlign: "center", padding: "40px 0" }}>
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke={C.green} strokeWidth="1.5" strokeLinecap="round" style={{ marginBottom: 20 }}><circle cx="12" cy="12" r="10" /><path d="M8 12l3 3 5-5" /></svg>
+        <h2 style={{ fontSize: 28, fontWeight: 700, letterSpacing: "-0.02em", marginBottom: 12 }}>Application submitted!</h2>
+        <p style={{ fontSize: 15, color: C.t2, lineHeight: 1.7 }}>Thanks for your interest in becoming a Foxtail distributor. We'll review your application and be in touch soon.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <div style={{ textAlign: "center", marginBottom: 40 }}>
+        <Mark size={44} />
+        <h2 style={{ fontSize: "clamp(24px, 3.5vw, 36px)", fontWeight: 700, letterSpacing: "-0.02em", marginTop: 20, marginBottom: 10, lineHeight: 1.15 }}>Apply to become a distributor</h2>
+        <p style={{ fontSize: 14, color: C.t3 }}>Fill out the form below and we'll be in touch.</p>
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+        <div className="fx-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+          <div><label style={labelStyle}>Business Name {reqStar}</label><input type="text" value={form.business_name} onChange={e => setForm({ ...form, business_name: e.target.value })} style={inputStyle} onFocus={e => e.target.style.borderColor = C.fox} onBlur={e => e.target.style.borderColor = C.border} /></div>
+          <div><label style={labelStyle}>ABN</label><input type="text" value={form.abn} onChange={e => setForm({ ...form, abn: e.target.value })} style={inputStyle} onFocus={e => e.target.style.borderColor = C.fox} onBlur={e => e.target.style.borderColor = C.border} /></div>
+        </div>
+
+        <div className="fx-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+          <div><label style={labelStyle}>Contact Name {reqStar}</label><input type="text" value={form.contact_name} onChange={e => setForm({ ...form, contact_name: e.target.value })} style={inputStyle} onFocus={e => e.target.style.borderColor = C.fox} onBlur={e => e.target.style.borderColor = C.border} /></div>
+          <div><label style={labelStyle}>Email {reqStar}</label><input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} style={inputStyle} onFocus={e => e.target.style.borderColor = C.fox} onBlur={e => e.target.style.borderColor = C.border} /></div>
+        </div>
+
+        <div className="fx-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+          <div><label style={labelStyle}>Phone {reqStar}</label><input type="tel" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} style={inputStyle} onFocus={e => e.target.style.borderColor = C.fox} onBlur={e => e.target.style.borderColor = C.border} /></div>
+          <div>
+            <label style={labelStyle}>Business Type {reqStar}</label>
+            <select value={form.business_type} onChange={e => setForm({ ...form, business_type: e.target.value })} style={{ ...inputStyle, cursor: "pointer", appearance: "none", backgroundImage: `url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235E7D65' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E")`, backgroundRepeat: "no-repeat", backgroundPosition: "right 16px center" }} onFocus={e => e.target.style.borderColor = C.fox} onBlur={e => e.target.style.borderColor = C.border}>
+              <option value="" style={{ background: C.night }}>Select...</option>
+              <option value="Security & Access Control" style={{ background: C.night }}>Security & Access Control</option>
+              <option value="CCTV & Surveillance" style={{ background: C.night }}>CCTV & Surveillance</option>
+              <option value="Electrical / Low Voltage" style={{ background: C.night }}>Electrical / Low Voltage</option>
+              <option value="IT / Networking" style={{ background: C.night }}>IT / Networking</option>
+              <option value="Gym / Facility Management" style={{ background: C.night }}>Gym / Facility Management</option>
+              <option value="Other" style={{ background: C.night }}>Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div><label style={labelStyle}>Street Address</label><input type="text" value={form.street_address} onChange={e => setForm({ ...form, street_address: e.target.value })} style={inputStyle} onFocus={e => e.target.style.borderColor = C.fox} onBlur={e => e.target.style.borderColor = C.border} /></div>
+
+        <div className="fx-grid-3" style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr", gap: 16 }}>
+          <div><label style={labelStyle}>City</label><input type="text" value={form.city} onChange={e => setForm({ ...form, city: e.target.value })} style={inputStyle} onFocus={e => e.target.style.borderColor = C.fox} onBlur={e => e.target.style.borderColor = C.border} /></div>
+          <div>
+            <label style={labelStyle}>State {reqStar}</label>
+            <select value={form.state} onChange={e => setForm({ ...form, state: e.target.value })} style={{ ...inputStyle, cursor: "pointer", appearance: "none", backgroundImage: `url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235E7D65' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E")`, backgroundRepeat: "no-repeat", backgroundPosition: "right 16px center" }} onFocus={e => e.target.style.borderColor = C.fox} onBlur={e => e.target.style.borderColor = C.border}>
+              <option value="" style={{ background: C.night }}>Select...</option>
+              {["QLD", "NSW", "VIC", "SA", "WA", "TAS", "NT", "ACT"].map(s => <option key={s} value={s} style={{ background: C.night }}>{s}</option>)}
+            </select>
+          </div>
+          <div><label style={labelStyle}>Postcode</label><input type="text" value={form.postcode} onChange={e => setForm({ ...form, postcode: e.target.value })} style={inputStyle} onFocus={e => e.target.style.borderColor = C.fox} onBlur={e => e.target.style.borderColor = C.border} /></div>
+        </div>
+
+        <div className="fx-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+          <div><label style={labelStyle}>Service Area</label><input type="text" placeholder="e.g. Brisbane Metro, Gold Coast" value={form.service_area} onChange={e => setForm({ ...form, service_area: e.target.value })} style={inputStyle} onFocus={e => e.target.style.borderColor = C.fox} onBlur={e => e.target.style.borderColor = C.border} /></div>
+          <div><label style={labelStyle}>Website</label><input type="text" placeholder="https://" value={form.website} onChange={e => setForm({ ...form, website: e.target.value })} style={inputStyle} onFocus={e => e.target.style.borderColor = C.fox} onBlur={e => e.target.style.borderColor = C.border} /></div>
+        </div>
+
+        <div><label style={labelStyle}>Additional Notes</label><textarea rows={3} value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} style={{ ...inputStyle, resize: "vertical", minHeight: 80 }} onFocus={e => e.target.style.borderColor = C.fox} onBlur={e => e.target.style.borderColor = C.border} /></div>
+
+        {error && <div style={{ fontSize: 13, color: C.red }}>{error}</div>}
+
+        <button onClick={handleSubmit} disabled={submitting} style={{ background: submitting ? C.t3 : C.fox, color: C.night, padding: "14px 32px", borderRadius: 10, border: "none", fontSize: 15, fontWeight: 600, cursor: submitting ? "default" : "pointer", fontFamily: "'Space Grotesk', sans-serif", transition: "all 0.25s", boxShadow: `0 0 40px ${C.fox}30`, opacity: submitting ? 0.7 : 1, alignSelf: "center", width: "100%" }} onMouseOver={e => { if (!submitting) { e.target.style.background = C.foxLight; e.target.style.boxShadow = `0 0 60px ${C.fox}50`; } }} onMouseOut={e => { if (!submitting) { e.target.style.background = C.fox; e.target.style.boxShadow = `0 0 40px ${C.fox}30`; } }}>{submitting ? "Submitting..." : "Submit Application"}</button>
+      </div>
+    </div>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════
 // BECOME A DISTRIBUTOR PAGE
 // ═══════════════════════════════════════════════════
 function BecomeDistributorPage({ setPage }) {
   return (
     <>
-      <PageHero label="Become a Distributor" title={<>Grow your business with<br /><span style={{ color: C.fox }}>recurring revenue.</span></>} subtitle="Join the Foxtail distributor network. Install our AI anti-tailgating systems for your clients and earn ongoing monthly income from every door." />
+      <PageHero label="Become a Distributor" title={<>Bring AI anti-tailgating<br /><span style={{ color: C.fox }}>to your clients.</span></>} subtitle="Offer the only system that detects tailgating, unauthorised entries, and people being let in from inside. We provide the hardware, software, and ongoing support — you sell and install." />
 
       <section className="fx-section" style={{ padding: "0 48px 100px" }}>
         <div style={{ maxWidth: 1000, margin: "0 auto" }}>
           <div className="fx-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginBottom: 80 }}>
             {[
-              { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" /></svg>), title: "Turnkey Product", desc: "Everything is built for you — hardware kits, software, cloud platform, setup wizard. You sell it, we handle the tech." },
-              { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><circle cx="12" cy="12" r="10" /><path d="M16 8l-4 4-4-4" /><path d="M16 16l-4-4-4 4" /></svg>), title: "New Revenue Stream", desc: "Add AI anti-tailgating to your offering. Unlike turnstiles or speed gates, Foxtail catches entries that other systems can't — including people being let in from inside. That's a conversation starter your competitors don't have." },
-              { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 00-3-3.87" /><path d="M16 3.13a4 4 0 010 7.75" /></svg>), title: "Full Training & Support", desc: "We train your team on installation and provide ongoing technical support. You're never on your own." },
+              { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" /></svg>), title: "Turnkey Product, Real Margin", desc: "Buy hardware kits at wholesale and sell at recommended retail. You keep the margin on every install — no revenue share, no ongoing obligations." },
+              { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><circle cx="12" cy="12" r="10" /><path d="M16 8l-4 4-4-4" /><path d="M16 16l-4-4-4 4" /></svg>), title: "A Product Your Competitors Don't Have", desc: "Foxtail catches entries that other systems can't — including people being let in from inside. That's a conversation starter no one else in your market has." },
+              { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 00-3-3.87" /><path d="M16 3.13a4 4 0 010 7.75" /></svg>), title: "Full Training & Support", desc: "We train your team on installation and provide ongoing technical support. You sell and install — we handle the software, subscriptions, and customer platform." },
             ].map((f, i) => (
               <Reveal key={i} delay={i * 0.1}>
                 <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: "32px 28px", height: "100%", display: "flex", flexDirection: "column" }}>
@@ -765,7 +966,7 @@ function BecomeDistributorPage({ setPage }) {
               <div style={{ display: "flex", flexDirection: "column", gap: 20, marginBottom: 60 }}>
                 {[
                   { label: "A proven product to sell", desc: "The only anti-tailgating system that catches people being let in from inside — not just traditional tailgating. A real differentiator your clients haven't seen before." },
-                  { label: "We handle the platform", desc: "Cloud dashboard, monitoring, software updates, and technical support — all managed by us" },
+                  { label: "No ongoing obligations", desc: "We handle the cloud dashboard, software subscriptions, and end-customer support. You sell and install — that's it." },
                   { label: "Pre-staged hardware option", desc: "We can ship hardware kits pre-loaded with software — your techs just mount cameras and run the setup wizard" },
                   { label: "Sales and marketing support", desc: "Co-branded collateral, product sheets, and sales resources to help you close deals" },
                   { label: "Full training", desc: "We train your team on the product, installation process, and how to demo it to clients" },
@@ -791,15 +992,12 @@ function BecomeDistributorPage({ setPage }) {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="fx-section" style={{ position: "relative", padding: "80px 48px 100px", borderTop: `1px solid ${C.border}`, background: C.forest, textAlign: "center", overflow: "hidden" }}>
+      {/* APPLICATION FORM */}
+      <section className="fx-section" style={{ position: "relative", padding: "80px 48px 100px", borderTop: `1px solid ${C.border}`, background: C.forest, overflow: "hidden" }}>
         <GlowOrb x="50%" y="50%" size={600} color={C.fox} opacity={0.04} />
-        <div style={{ position: "relative", zIndex: 1, maxWidth: 520, margin: "0 auto" }}>
+        <div style={{ position: "relative", zIndex: 1, maxWidth: 600, margin: "0 auto" }}>
           <Reveal>
-            <Mark size={44} />
-            <h2 style={{ fontSize: "clamp(24px, 3.5vw, 36px)", fontWeight: 700, letterSpacing: "-0.02em", marginTop: 20, marginBottom: 14, lineHeight: 1.15 }}>Ready to join the network?</h2>
-            <p style={{ fontSize: 15, color: C.t2, marginBottom: 28, lineHeight: 1.7 }}>Get in touch and we'll walk you through the distributor program, pricing, and next steps.</p>
-            <a href="mailto:admin@foxtailai.com.au?subject=Distributor%20programme%20enquiry" style={{ display: "inline-block", background: C.fox, color: C.night, padding: "14px 32px", borderRadius: 10, fontSize: 15, fontWeight: 600, textDecoration: "none", transition: "all 0.25s", boxShadow: `0 0 40px ${C.fox}30` }} onMouseOver={e => { e.target.style.background = C.foxLight; e.target.style.boxShadow = `0 0 60px ${C.fox}50`; }} onMouseOut={e => { e.target.style.background = C.fox; e.target.style.boxShadow = `0 0 40px ${C.fox}30`; }}>admin@foxtailai.com.au</a>
+            <DistributorApplicationForm />
           </Reveal>
         </div>
       </section>
@@ -818,7 +1016,7 @@ export default function FoxtailWebsite() {
     switch (page) {
       case "pricing": return <PricingPage setPage={setPage} />;
       case "about": return <AboutPage />;
-      case "distributors": return <DistributorsPage />;
+      case "distributors": return <DistributorsPage setPage={setPage} />;
       case "become-distributor": return <BecomeDistributorPage setPage={setPage} />;
       case "contact": return <ContactPage setPage={setPage} />;
       default: return <HomePage setPage={setPage} />;

@@ -592,58 +592,93 @@ function AboutPage() {
 // FIND A DISTRIBUTOR PAGE
 // ═══════════════════════════════════════════════════
 function DistributorsPage({ setPage }) {
-  const [distributors, setDistributors] = useState([]);
+  const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [stateFilter, setStateFilter] = useState("All");
+  const mobile = useMobile();
 
   useEffect(() => {
     fetch(`${API_BACKEND}/api/distributors/public`)
       .then(r => { if (!r.ok) throw new Error(); return r.json(); })
-      .then(data => { setDistributors(data); setLoading(false); })
+      .then(data => { setLocations(data); setLoading(false); })
       .catch(() => { setError("Unable to load distributors"); setLoading(false); });
   }, []);
 
-  const grouped = distributors.reduce((acc, d) => {
-    (acc[d.state] = acc[d.state] || []).push(d);
+  // Group location entries by business_name into company cards
+  const companies = locations.reduce((acc, loc) => {
+    const key = loc.business_name;
+    if (!acc[key]) acc[key] = { business_name: key, website: loc.website, locations: [] };
+    acc[key].locations.push(loc);
     return acc;
   }, {});
+  const companyList = Object.values(companies).sort((a, b) => a.business_name.localeCompare(b.business_name));
+
+  // Filter by state
+  const filtered = stateFilter === "All" ? companyList : companyList
+    .map(c => ({ ...c, locations: c.locations.filter(l => l.state === stateFilter) }))
+    .filter(c => c.locations.length > 0);
+
+  const states = ["All", "QLD", "NSW", "VIC", "SA", "WA", "TAS", "NT", "ACT"];
+  const pillBase = { padding: mobile ? "8px 14px" : "8px 20px", borderRadius: 20, fontSize: 13, fontWeight: 500, border: "none", cursor: "pointer", fontFamily: "'Space Grotesk', sans-serif", transition: "all 0.2s", whiteSpace: "nowrap" };
 
   return (
     <>
       <PageHero label="Find a Distributor" title={<>Get Foxtail installed<br /><span style={{ color: C.fox }}>at your facility.</span></>} subtitle="Foxtail systems are installed by authorised distributors. Find one near you." />
 
       <section className="fx-section" style={{ padding: "0 48px 120px" }}>
-        <div style={{ maxWidth: 680, margin: "0 auto" }}>
+        <div style={{ maxWidth: 720, margin: "0 auto" }}>
+          {/* State filter pills */}
+          <Reveal>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 32, justifyContent: "center" }}>
+              {states.map(s => (
+                <button key={s} onClick={() => setStateFilter(s)} style={{ ...pillBase, background: stateFilter === s ? C.fox : C.surface, color: stateFilter === s ? C.night : C.t2, border: stateFilter === s ? "none" : `1px solid ${C.border}` }}
+                  onMouseOver={e => { if (stateFilter !== s) { e.target.style.borderColor = C.t3; e.target.style.color = C.t1; } }}
+                  onMouseOut={e => { if (stateFilter !== s) { e.target.style.borderColor = C.border; e.target.style.color = C.t2; } }}
+                >{s}</button>
+              ))}
+            </div>
+          </Reveal>
+
           <Reveal>
             {loading ? (
               <div style={{ textAlign: "center", padding: 48, color: C.t3, fontSize: 14 }}>Loading distributors...</div>
             ) : error ? (
               <div style={{ textAlign: "center", padding: 48, color: C.t3, fontSize: 14 }}>{error}</div>
-            ) : distributors.length === 0 ? (
+            ) : locations.length === 0 ? (
               <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: "40px 32px", textAlign: "center" }}>
                 <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 12 }}>We're currently onboarding distributors.</div>
                 <div style={{ fontSize: 14, color: C.t2, marginBottom: 24, lineHeight: 1.7 }}>Our distributor network is growing. If you're a security or access control professional, apply to join.</div>
                 <a href="#" onClick={e => { e.preventDefault(); setPage("become-distributor"); window.scrollTo(0, 0); }} style={{ display: "inline-block", background: C.fox, color: C.night, padding: "12px 28px", borderRadius: 10, fontSize: 14, fontWeight: 600, textDecoration: "none", transition: "background 0.2s" }} onMouseOver={e => e.target.style.background = C.foxLight} onMouseOut={e => e.target.style.background = C.fox}>Become a Distributor</a>
               </div>
+            ) : filtered.length === 0 ? (
+              <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: "40px 32px", textAlign: "center" }}>
+                <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 12 }}>No distributors in {stateFilter} yet.</div>
+                <div style={{ fontSize: 14, color: C.t2, marginBottom: 24, lineHeight: 1.7 }}>Interested in becoming a Foxtail distributor in {stateFilter}?</div>
+                <a href="#" onClick={e => { e.preventDefault(); setPage("become-distributor"); window.scrollTo(0, 0); }} style={{ display: "inline-block", background: C.fox, color: C.night, padding: "12px 28px", borderRadius: 10, fontSize: 14, fontWeight: 600, textDecoration: "none", transition: "background 0.2s" }} onMouseOver={e => e.target.style.background = C.foxLight} onMouseOut={e => e.target.style.background = C.fox}>Become a Distributor</a>
+              </div>
             ) : (
-              <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
-                {Object.entries(grouped).sort(([a], [b]) => a.localeCompare(b)).map(([state, list]) => (
-                  <div key={state}>
-                    <div style={{ fontSize: 11, fontWeight: 600, color: C.t3, letterSpacing: "0.08em", marginBottom: 12 }}>{state.toUpperCase()}</div>
-                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                      {list.map((d, i) => (
-                        <div key={i} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 10, padding: "20px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
-                          <div>
-                            <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 4 }}>{d.business_name}</div>
-                            {d.service_area && <div style={{ fontSize: 12, color: C.t3 }}>{d.service_area}</div>}
-                          </div>
-                          <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
-                            {d.phone && <a href={`tel:${d.phone}`} style={{ fontSize: 13, color: C.fox, textDecoration: "none", fontWeight: 500 }}>{d.phone}</a>}
-                            {d.website && <a href={d.website.startsWith("http") ? d.website : `https://${d.website}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: C.t2, textDecoration: "none" }}>Website →</a>}
-                          </div>
-                        </div>
-                      ))}
+              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                {filtered.map((company, ci) => (
+                  <div key={ci} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: mobile ? "20px 18px" : "24px 28px", transition: "border-color 0.2s" }} onMouseOver={e => e.currentTarget.style.borderColor = C.borderLight} onMouseOut={e => e.currentTarget.style.borderColor = C.border}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, marginBottom: company.locations.length > 0 ? 16 : 0 }}>
+                      <div style={{ fontSize: 17, fontWeight: 600 }}>{company.business_name}</div>
+                      {company.website && <a href={company.website.startsWith("http") ? company.website : `https://${company.website}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: C.fox, textDecoration: "none", fontWeight: 500, whiteSpace: "nowrap", flexShrink: 0 }}>Website →</a>}
                     </div>
+                    {company.locations.length > 0 && (
+                      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                        {company.locations.map((loc, li) => {
+                          const place = loc.city || loc.service_area;
+                          return (
+                            <div key={li} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: C.t2 }}>
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={C.t3} strokeWidth="1.5" strokeLinecap="round" style={{ flexShrink: 0 }}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
+                              <span>{place || loc.state}</span>
+                              {loc.phone && <><span style={{ color: C.t4 }}>—</span><a href={`tel:${loc.phone}`} style={{ color: C.fox, textDecoration: "none", fontWeight: 500 }}>{loc.phone}</a></>}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

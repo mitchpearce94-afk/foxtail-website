@@ -940,7 +940,7 @@ function DistributorApplicationForm() {
 function BecomeDistributorPage({ setPage }) {
   return (
     <>
-      <PageHero label="Become a Distributor" title={<>Sell, install,<br /><span style={{ color: C.fox }}>grow your business.</span></>} subtitle="Add AI-powered security to your product range. We provide the hardware, software, and support — you sell and install it for your clients." />
+      <PageHero label="Become a Distributor" title={<>Bring AI anti-tailgating<br /><span style={{ color: C.fox }}>to your clients.</span></>} subtitle="Offer the only system that detects tailgating, unauthorised entries, and people being let in from inside. We provide the hardware, software, and ongoing support — you sell and install." />
 
       <section className="fx-section" style={{ padding: "0 48px 100px" }}>
         <div style={{ maxWidth: 1000, margin: "0 auto" }}>

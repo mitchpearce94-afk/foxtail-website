@@ -186,6 +186,7 @@ function Footer({ setPage }) {
           </div>
           <div>
             <div style={{ fontSize: 11, fontWeight: 600, color: C.t3, letterSpacing: "0.08em", marginBottom: 16 }}>CONNECT</div>
+            <a href="#" onClick={nl("become-distributor")} style={{ display: "block", fontSize: 13, color: C.t2, textDecoration: "none", marginBottom: 10, transition: "color 0.2s" }} onMouseOver={e => e.target.style.color = C.t1} onMouseOut={e => e.target.style.color = C.t2}>Apply as Distributor</a>
             <a href="#" onClick={nl("contact")} style={{ display: "block", fontSize: 13, color: C.t2, textDecoration: "none", marginBottom: 10, transition: "color 0.2s" }} onMouseOver={e => e.target.style.color = C.t1} onMouseOut={e => e.target.style.color = C.t2}>Contact Us</a>
             <a href={APP_URL} target="_blank" rel="noopener noreferrer" style={{ display: "block", fontSize: 13, color: C.t2, textDecoration: "none", marginBottom: 10 }}>Dashboard Login</a>
           </div>

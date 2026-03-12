@@ -324,20 +324,20 @@ admin@foxtailai.com.au / changeme (MUST CHANGE)
 - USB installer for pre-staging
 - Custom domain (foxtailai.com.au) with SSL on Cloudflare
 - 17-page technician setup guide (PDF)
-- Stripe billing integration ($99/mo per site, checkout, webhooks, billing portal)
-- User invite flow with email invites, set-password page, forced onboarding
+- Stripe billing integration ($99/mo AUD per site, checkout, webhooks, billing portal, billing gate)
+- Customer onboarding flow (invite emails, password setup, guided tutorial)
 - Customer-user linking (customer_id on users, auto-scope to own sites)
-- Distributor application system (public apply form, admin approve/reject, email notifications)
-- Distributor multi-location support (add/delete locations per distributor)
+- Distributor system (application form, admin approve/reject, email notifications, multi-location support)
 - Marketing website: distributor application form, public distributor listing, contact form
 - Marketing website: "Find a Distributor" page with state filter pills and company-grouped cards
+- Marketing website: SPA rewrites (vercel.json) for direct URL navigation
+- Alerts nav RBAC fix (viewAlerts/reviewAlerts enabled for foxtail_admin and foxtail_staff)
+- E2E test suite: 63 Playwright tests across 12 files (auth, navigation, RBAC, all pages, billing gate, marketing site)
 
 ### What's Pending (🔨)
 - Deploy updated edge code to work PC (false positive fixes from Session 20)
 - New work PC setup using USB installer
 - Further on-site testing with hardened first-appearance detection
-- Change default admin password
-- Welcome emails (customer after site goes live, site manager with login)
 
 ### What's Not Started (📋)
 - Mobile app (Capacitor/React Native) for site managers
@@ -345,6 +345,7 @@ admin@foxtailai.com.au / changeme (MUST CHANGE)
 - Files subdomain (files.foxtailai.com.au via Cloudflare R2)
 - Over-the-air edge updates
 - MAC address display in setup wizard camera discovery
+- Facial biometric member identification
 
 ---
 
@@ -353,10 +354,7 @@ admin@foxtailai.com.au / changeme (MUST CHANGE)
 ### Immediate (Market Ready)
 1. Deploy Session 19+20 edge fixes to work PC
 2. On-site walk-through testing with real people
-3. Change default admin password
-4. Welcome emails (customer + site manager)
-5. New work PC setup via USB installer
-6. Connect Stripe live keys and test end-to-end billing flow
+3. New work PC setup via USB installer
 
 ### Short Term
 - Mobile app for site managers (push notifications, persistent login)
@@ -373,6 +371,7 @@ admin@foxtailai.com.au / changeme (MUST CHANGE)
 - US expansion (2,500+ Snap Fitness locations)
 - Multi-brand support (Planet Fitness, Anytime Fitness, etc.)
 - Advanced analytics and reporting
+- Facial biometric member identification
 
 ---
 
@@ -403,7 +402,7 @@ admin@foxtailai.com.au / changeme (MUST CHANGE)
 | 13 Feb 2026 | 17 | Supabase Storage for clips, Resend email alerts, dual-camera 20s clips, timezone-correct timestamps, DNS to Cloudflare |
 | 5-6 Mar 2026 | 19 | New cameras, setup wizard fixes, solid door first-appearance detection, scan detection overhaul, event ID fix, immediate flush, instant email, H.264 re-encoding, USB installer, alerts page restored |
 | 10 Mar 2026 | 20 | 6-gate first-appearance hardening, guest allowance (max_persons_per_scan), on-site onboarding in wizard, delete users/customers, styled ConfirmModals, USB installer rebuilt, 17-page setup guide PDF, homepage stats updated |
-| 11 Mar 2026 | 21 | Stripe billing (checkout, webhooks, portal, per-site billing_active), user invite flow (email invite, set-password, onboarding), customer-user linking, distributor application system (apply form, admin approve/reject, email notifications), distributor multi-location support, marketing site overhaul (distributor form, public listing with state filters, contact form, remove all email links), "Become a Distributor" page copy rewrite |
+| 11-12 Mar 2026 | 21-22 | Stripe billing (checkout, webhooks, portal, billing gate $99/mo AUD), customer onboarding (invite emails, password setup, guided tutorial), distributor system (application form, admin approval, public listing, multi-location), E2E test suite (63 Playwright tests across 12 files), RBAC fix (alerts nav), website SPA rewrites, DASHBOARD_URL fix |
 
 ---
 
@@ -424,5 +423,5 @@ admin@foxtailai.com.au / changeme (MUST CHANGE)
 
 ---
 
-*Last updated: 11 March 2026*
+*Last updated: 12 March 2026*
 *Updated by: Mitchell / Claude*

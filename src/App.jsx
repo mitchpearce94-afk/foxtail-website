@@ -190,10 +190,15 @@ function Footer({ setPage }) {
             <a href="#" onClick={nl("contact")} style={{ display: "block", fontSize: 13, color: C.t2, textDecoration: "none", marginBottom: 10, transition: "color 0.2s" }} onMouseOver={e => e.target.style.color = C.t1} onMouseOut={e => e.target.style.color = C.t2}>Contact Us</a>
             <a href={APP_URL} target="_blank" rel="noopener noreferrer" style={{ display: "block", fontSize: 13, color: C.t2, textDecoration: "none", marginBottom: 10 }}>Dashboard Login</a>
           </div>
+          <div>
+            <div style={{ fontSize: 11, fontWeight: 600, color: C.t3, letterSpacing: "0.08em", marginBottom: 16 }}>LEGAL</div>
+            <a href="#" onClick={nl("privacy")} style={{ display: "block", fontSize: 13, color: C.t2, textDecoration: "none", marginBottom: 10, transition: "color 0.2s" }} onMouseOver={e => e.target.style.color = C.t1} onMouseOut={e => e.target.style.color = C.t2}>Privacy Policy</a>
+            <a href="#" onClick={nl("terms")} style={{ display: "block", fontSize: 13, color: C.t2, textDecoration: "none", marginBottom: 10, transition: "color 0.2s" }} onMouseOver={e => e.target.style.color = C.t1} onMouseOut={e => e.target.style.color = C.t2}>Terms of Service</a>
+          </div>
         </div>
       </div>
       <div style={{ maxWidth: 1100, margin: "48px auto 0", paddingTop: 32, borderTop: `1px solid ${C.border}`, display: "flex", flexDirection: mobile ? "column" : "row", justifyContent: "space-between", gap: mobile ? 8 : 0, fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: C.t4 }}>
-        <span>© 2026 Foxtail. All rights reserved.</span>
+        <span>© 2026 Foxtail AI Pty Ltd (ACN 696 970 519). All rights reserved.</span>
         <span>Brisbane, Australia</span>
       </div>
     </footer>
@@ -1007,6 +1012,368 @@ function BecomeDistributorPage({ setPage }) {
 
 
 // ═══════════════════════════════════════════════════
+// PRIVACY POLICY
+// ═══════════════════════════════════════════════════
+function PrivacyPage() {
+  const mobile = useMobile();
+  const px = mobile ? "20px" : "48px";
+  const sectionStyle = { padding: `60px ${px}`, maxWidth: 800, margin: "0 auto" };
+  const h2Style = { fontSize: 24, fontWeight: 600, marginBottom: 16, color: C.t1 };
+  const h3Style = { fontSize: 18, fontWeight: 600, marginBottom: 10, color: C.t1 };
+  const pStyle = { fontSize: 15, color: C.t2, lineHeight: 1.8, marginBottom: 16 };
+  const liStyle = { fontSize: 15, color: C.t2, lineHeight: 1.8, marginBottom: 8, paddingLeft: 8 };
+  const ulStyle = { listStyle: "disc", paddingLeft: 24, marginBottom: 16 };
+  return (
+    <>
+      <PageHero label="Privacy" title={<>Privacy Policy</>} subtitle="How Foxtail AI collects, uses, and protects your information." />
+
+      <section style={sectionStyle}>
+        <p style={{ ...pStyle, fontStyle: "italic", borderLeft: `3px solid ${C.fox}`, paddingLeft: 16, marginBottom: 32 }}>
+          This privacy policy is provided for informational purposes and does not constitute legal advice. You should seek independent legal advice regarding your rights and obligations.
+        </p>
+        <p style={pStyle}>Last updated: 10 April 2026</p>
+        <p style={pStyle}>
+          Foxtail AI Pty Ltd (ACN 696 970 519) ("Foxtail AI", "we", "us", "our") is committed to protecting your privacy in accordance with the Australian Privacy Act 1988 (Cth) and the Australian Privacy Principles (APPs). This policy explains how we collect, use, disclose, and store personal information.
+        </p>
+        <p style={pStyle}>
+          Foxtail AI is a subsidiary of Centrefit Pty Ltd, operating from Brisbane, Queensland, Australia.
+        </p>
+      </section>
+
+      <section style={{ ...sectionStyle, background: C.card, borderRadius: 16, padding: `48px ${mobile ? "20px" : "40px"}`, marginBottom: 40 }}>
+        <h2 style={h2Style}>1. What Data We Collect</h2>
+        <p style={pStyle}>We collect the following types of information:</p>
+        <h3 style={h3Style}>CCTV and Detection Data</h3>
+        <ul style={ulStyle}>
+          <li style={liStyle}>Video footage and snapshots from CCTV cameras at monitored entry points</li>
+          <li style={liStyle}>Alert clips (short video segments capturing detected events)</li>
+          <li style={liStyle}>Traffic counts and occupancy analytics</li>
+          <li style={liStyle}>Detection metadata (timestamps, confidence scores, event types)</li>
+        </ul>
+        <h3 style={h3Style}>Account Data</h3>
+        <ul style={ulStyle}>
+          <li style={liStyle}>User account information (name, email address, role, password hash)</li>
+          <li style={liStyle}>Customer/organisation details (business name, contact information, billing details)</li>
+        </ul>
+        <h3 style={h3Style}>Distributor Application Data</h3>
+        <ul style={ulStyle}>
+          <li style={liStyle}>Business name, ABN, contact name, email, phone number</li>
+          <li style={liStyle}>Business type, service areas, and location details</li>
+        </ul>
+        <h3 style={h3Style}>Contact Form Submissions</h3>
+        <ul style={ulStyle}>
+          <li style={liStyle}>Name, email address, and message content submitted through our website contact form</li>
+        </ul>
+      </section>
+
+      <section style={sectionStyle}>
+        <h2 style={h2Style}>2. How CCTV Data Works</h2>
+        <p style={pStyle}>
+          Foxtail AI uses an edge computing model for CCTV processing. Video from cameras connected to our system is processed locally on the edge device installed at your facility. The full video stream never leaves your premises.
+        </p>
+        <p style={pStyle}>
+          When a detection event occurs (such as a suspected tailgating incident), the system captures a short alert clip and snapshots. Only these alert clips and snapshots are uploaded to our cloud platform for review by authorised facility operators via the Foxtail dashboard.
+        </p>
+        <p style={pStyle}>
+          Camera snapshots are periodically uploaded (approximately every 60 seconds) for live status monitoring on the dashboard. These are overwritten with each new snapshot and are not retained long-term.
+        </p>
+        <p style={pStyle}>
+          Alert evidence (clips and snapshots) is retained in cloud storage and may be deleted after the applicable retention period configured by the facility operator.
+        </p>
+      </section>
+
+      <section style={{ ...sectionStyle, background: C.card, borderRadius: 16, padding: `48px ${mobile ? "20px" : "40px"}`, marginBottom: 40 }}>
+        <h2 style={h2Style}>3. Purpose of Collection</h2>
+        <p style={pStyle}>We collect and use personal information for the following purposes:</p>
+        <ul style={ulStyle}>
+          <li style={liStyle}>Providing AI-powered security detection services to gym and facility operators</li>
+          <li style={liStyle}>Generating traffic analytics and occupancy data for facility management</li>
+          <li style={liStyle}>Sending alert notifications to authorised facility operators when detection events occur</li>
+          <li style={liStyle}>Managing user accounts and access to the Foxtail dashboard</li>
+          <li style={liStyle}>Processing subscription billing</li>
+          <li style={liStyle}>Processing distributor applications</li>
+          <li style={liStyle}>Responding to enquiries submitted via our contact form</li>
+          <li style={liStyle}>Improving our detection algorithms and system performance</li>
+        </ul>
+      </section>
+
+      <section style={sectionStyle}>
+        <h2 style={h2Style}>4. Who We Share Data With</h2>
+        <p style={pStyle}>
+          Detection alerts, video clips, snapshots, and analytics are shared with authorised operators of the facility where the Foxtail system is installed, via the Foxtail dashboard. Access is controlled through role-based permissions.
+        </p>
+        <p style={pStyle}>
+          We do not sell, rent, or trade personal information to third parties.
+        </p>
+        <p style={pStyle}>We may share information with the following service providers who assist us in operating our platform:</p>
+        <ul style={ulStyle}>
+          <li style={liStyle}>Supabase (database and file storage, Sydney region)</li>
+          <li style={liStyle}>Vercel (dashboard hosting)</li>
+          <li style={liStyle}>Railway (backend API hosting)</li>
+          <li style={liStyle}>Stripe (payment processing)</li>
+          <li style={liStyle}>Resend (transactional email delivery)</li>
+        </ul>
+        <p style={pStyle}>
+          We may also disclose personal information where required by Australian law or court order.
+        </p>
+      </section>
+
+      <section style={{ ...sectionStyle, background: C.card, borderRadius: 16, padding: `48px ${mobile ? "20px" : "40px"}`, marginBottom: 40 }}>
+        <h2 style={h2Style}>5. Data Storage and Security</h2>
+        <p style={pStyle}>
+          Our primary database is hosted on Supabase in the Sydney (ap-southeast-2) region. Video evidence is stored in Supabase Storage. Our backend API runs on Railway and our dashboard is hosted on Vercel.
+        </p>
+        <p style={pStyle}>
+          We take reasonable steps to protect personal information from misuse, interference, loss, and unauthorised access or disclosure. These measures include encrypted connections (HTTPS/TLS), role-based access controls, and hashed password storage.
+        </p>
+        <p style={pStyle}>
+          CCTV footage is processed locally on the edge device at the facility. Only alert clips and periodic snapshots are transmitted to cloud storage via encrypted connections.
+        </p>
+      </section>
+
+      <section style={sectionStyle}>
+        <h2 style={h2Style}>6. Your Rights</h2>
+        <p style={pStyle}>Under the Australian Privacy Principles, you have the right to:</p>
+        <ul style={ulStyle}>
+          <li style={liStyle}>Request access to the personal information we hold about you</li>
+          <li style={liStyle}>Request correction of any inaccurate or out-of-date information</li>
+          <li style={liStyle}>Lodge a complaint about how we handle your personal information</li>
+        </ul>
+        <p style={pStyle}>
+          To exercise any of these rights, please contact us at <span style={{ color: C.fox }}>admin@foxtailai.com.au</span>.
+        </p>
+        <p style={pStyle}>
+          If you are not satisfied with our response to a complaint, you may contact the Office of the Australian Information Commissioner (OAIC) at <span style={{ color: C.fox }}>www.oaic.gov.au</span>.
+        </p>
+      </section>
+
+      <section style={{ ...sectionStyle, background: C.card, borderRadius: 16, padding: `48px ${mobile ? "20px" : "40px"}`, marginBottom: 40 }}>
+        <h2 style={h2Style}>7. Cookies and Analytics</h2>
+        <p style={pStyle}>
+          Our marketing website does not currently use third-party tracking cookies or analytics services. We may use essential cookies for session management on the Foxtail dashboard application.
+        </p>
+        <p style={pStyle}>
+          If we introduce analytics tools in the future, we will update this policy accordingly.
+        </p>
+      </section>
+
+      <section style={sectionStyle}>
+        <h2 style={h2Style}>8. Changes to This Policy</h2>
+        <p style={pStyle}>
+          We may update this privacy policy from time to time to reflect changes in our practices or for legal, operational, or regulatory reasons. Any changes will be posted on this page with an updated "Last updated" date. We encourage you to review this policy periodically.
+        </p>
+      </section>
+
+      <section style={{ ...sectionStyle, marginBottom: 40 }}>
+        <h2 style={h2Style}>9. Contact Us</h2>
+        <p style={pStyle}>
+          For any privacy-related questions, concerns, or requests, please contact us:
+        </p>
+        <p style={pStyle}>
+          <strong style={{ color: C.t1 }}>Foxtail AI Pty Ltd</strong><br />
+          ACN 696 970 519<br />
+          Brisbane, Queensland, Australia<br />
+          Email: <span style={{ color: C.fox }}>admin@foxtailai.com.au</span>
+        </p>
+      </section>
+    </>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════
+// TERMS OF SERVICE
+// ═══════════════════════════════════════════════════
+function TermsPage() {
+  const mobile = useMobile();
+  const px = mobile ? "20px" : "48px";
+  const sectionStyle = { padding: `60px ${px}`, maxWidth: 800, margin: "0 auto" };
+  const h2Style = { fontSize: 24, fontWeight: 600, marginBottom: 16, color: C.t1 };
+  const pStyle = { fontSize: 15, color: C.t2, lineHeight: 1.8, marginBottom: 16 };
+  const liStyle = { fontSize: 15, color: C.t2, lineHeight: 1.8, marginBottom: 8, paddingLeft: 8 };
+  const ulStyle = { listStyle: "disc", paddingLeft: 24, marginBottom: 16 };
+  return (
+    <>
+      <PageHero label="Terms" title={<>Terms of Service</>} subtitle="The terms governing use of the Foxtail AI platform and services." />
+
+      <section style={sectionStyle}>
+        <p style={{ ...pStyle, fontStyle: "italic", borderLeft: `3px solid ${C.fox}`, paddingLeft: 16, marginBottom: 32 }}>
+          These terms are provided for informational purposes and do not constitute legal advice. You should seek independent legal advice regarding your rights and obligations.
+        </p>
+        <p style={pStyle}>Last updated: 10 April 2026</p>
+        <p style={pStyle}>
+          These Terms of Service ("Terms") govern your access to and use of the services provided by Foxtail AI Pty Ltd (ACN 696 970 519) ("Foxtail AI", "we", "us", "our"), a subsidiary of Centrefit Pty Ltd, operating from Brisbane, Queensland, Australia.
+        </p>
+        <p style={pStyle}>
+          By accessing or using our platform, dashboard, edge devices, or any related services (collectively, the "Service"), you agree to be bound by these Terms. If you do not agree, do not use the Service.
+        </p>
+      </section>
+
+      <section style={{ ...sectionStyle, background: C.card, borderRadius: 16, padding: `48px ${mobile ? "20px" : "40px"}`, marginBottom: 40 }}>
+        <h2 style={h2Style}>1. Service Description</h2>
+        <p style={pStyle}>
+          Foxtail AI provides an AI-powered anti-tailgating detection platform for gyms and access-controlled facilities. The Service includes:
+        </p>
+        <ul style={ulStyle}>
+          <li style={liStyle}>Edge device software that processes CCTV feeds to detect unauthorised entries</li>
+          <li style={liStyle}>A cloud-based dashboard for viewing alerts, managing sites, and reviewing detection events</li>
+          <li style={liStyle}>Alert notifications via email when detection events occur</li>
+          <li style={liStyle}>Traffic analytics and occupancy data</li>
+        </ul>
+        <p style={pStyle}>
+          The Service is subscription-based and is sold to facility operators through authorised distributors or directly by Foxtail AI.
+        </p>
+      </section>
+
+      <section style={sectionStyle}>
+        <h2 style={h2Style}>2. Subscriptions and Billing</h2>
+        <p style={pStyle}>
+          Access to the Foxtail AI platform requires an active subscription. Subscription plans are priced between $99 and $149 per month per site (AUD, excluding GST), depending on the plan selected.
+        </p>
+        <ul style={ulStyle}>
+          <li style={liStyle}>Billing is processed through Stripe. By subscribing, you agree to Stripe's terms of service.</li>
+          <li style={liStyle}>Subscriptions automatically renew each billing cycle unless cancelled.</li>
+          <li style={liStyle}>You may cancel your subscription at any time through the Foxtail dashboard billing portal. Cancellation takes effect at the end of the current billing period.</li>
+          <li style={liStyle}>No refunds are provided for partial billing periods.</li>
+          <li style={liStyle}>We reserve the right to adjust pricing with 30 days' written notice.</li>
+        </ul>
+      </section>
+
+      <section style={{ ...sectionStyle, background: C.card, borderRadius: 16, padding: `48px ${mobile ? "20px" : "40px"}`, marginBottom: 40 }}>
+        <h2 style={h2Style}>3. Hardware</h2>
+        <p style={pStyle}>
+          Foxtail AI edge device hardware kits are sold through authorised distributors at a recommended retail price of $2,399 + GST per kit. Hardware purchases, installation, and hardware warranty are handled by your distributor, not by Foxtail AI directly.
+        </p>
+        <p style={pStyle}>
+          Foxtail AI is not responsible for hardware defects, installation quality, or any damage arising from improper installation. Contact your distributor for hardware-related support and warranty claims.
+        </p>
+      </section>
+
+      <section style={sectionStyle}>
+        <h2 style={h2Style}>4. Distributor Terms</h2>
+        <p style={pStyle}>
+          Authorised distributors purchase hardware kits at wholesale pricing and resell at the fixed recommended retail price of $2,399 + GST per kit. Distributors must not undercut the recommended retail price.
+        </p>
+        <p style={pStyle}>
+          Foxtail AI reserves the right to revoke distributor authorisation for breaches of these terms, including price undercutting or conduct that may damage the Foxtail AI brand.
+        </p>
+      </section>
+
+      <section style={{ ...sectionStyle, background: C.card, borderRadius: 16, padding: `48px ${mobile ? "20px" : "40px"}`, marginBottom: 40 }}>
+        <h2 style={h2Style}>5. User Accounts and Security</h2>
+        <p style={pStyle}>
+          You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. You must:
+        </p>
+        <ul style={ulStyle}>
+          <li style={liStyle}>Use a strong, unique password and change it when prompted</li>
+          <li style={liStyle}>Notify us immediately at <span style={{ color: C.fox }}>admin@foxtailai.com.au</span> if you suspect unauthorised access</li>
+          <li style={liStyle}>Ensure that users you invite to your organisation have appropriate roles and permissions</li>
+        </ul>
+        <p style={pStyle}>
+          We are not liable for any loss or damage arising from unauthorised use of your account.
+        </p>
+      </section>
+
+      <section style={sectionStyle}>
+        <h2 style={h2Style}>6. Acceptable Use</h2>
+        <p style={pStyle}>You agree not to:</p>
+        <ul style={ulStyle}>
+          <li style={liStyle}>Tamper with, modify, or reverse engineer any Foxtail AI edge device or software</li>
+          <li style={liStyle}>Attempt to extract, decompile, or copy any detection algorithms, machine learning models, or source code</li>
+          <li style={liStyle}>Use the Service for any unlawful purpose or in violation of any applicable laws</li>
+          <li style={liStyle}>Interfere with or disrupt the Service, servers, or networks connected to the Service</li>
+          <li style={liStyle}>Share your account credentials with unauthorised third parties</li>
+          <li style={liStyle}>Use the Service to monitor individuals for purposes other than legitimate facility access control</li>
+        </ul>
+      </section>
+
+      <section style={{ ...sectionStyle, background: C.card, borderRadius: 16, padding: `48px ${mobile ? "20px" : "40px"}`, marginBottom: 40 }}>
+        <h2 style={h2Style}>7. Data and Privacy</h2>
+        <p style={pStyle}>
+          Your use of the Service is also governed by our <span style={{ color: C.fox, cursor: "pointer" }}>Privacy Policy</span>, which explains how we collect, use, and protect personal information. By using the Service, you consent to the data practices described in our Privacy Policy.
+        </p>
+        <p style={pStyle}>
+          You are responsible for ensuring that your use of CCTV monitoring through the Foxtail platform complies with applicable privacy laws, including providing appropriate signage and notifications at your facility.
+        </p>
+      </section>
+
+      <section style={sectionStyle}>
+        <h2 style={h2Style}>8. Intellectual Property</h2>
+        <p style={pStyle}>
+          All software, algorithms, machine learning models, designs, trademarks, and content comprising the Foxtail AI platform are owned by Foxtail AI Pty Ltd or its licensors. Your subscription grants you a limited, non-exclusive, non-transferable licence to use the Service for its intended purpose during the subscription period.
+        </p>
+        <p style={pStyle}>
+          You retain ownership of any data generated at your facility (such as alert footage specific to your site). However, we may use anonymised, aggregated data to improve our detection algorithms and system performance.
+        </p>
+      </section>
+
+      <section style={{ ...sectionStyle, background: C.card, borderRadius: 16, padding: `48px ${mobile ? "20px" : "40px"}`, marginBottom: 40 }}>
+        <h2 style={h2Style}>9. Limitation of Liability</h2>
+        <p style={pStyle}>
+          Foxtail AI's detection system uses artificial intelligence and computer vision to identify potential unauthorised entries. While we strive for high accuracy, detection is provided on a best-effort basis and is not guaranteed to be 100% accurate.
+        </p>
+        <p style={pStyle}>
+          To the maximum extent permitted by Australian law:
+        </p>
+        <ul style={ulStyle}>
+          <li style={liStyle}>The Service is provided "as is" without warranties of any kind, express or implied, including fitness for a particular purpose</li>
+          <li style={liStyle}>Foxtail AI is not liable for any missed detections, false positives, or security breaches at your facility</li>
+          <li style={liStyle}>Foxtail AI is not liable for any indirect, incidental, special, or consequential damages arising from use of the Service</li>
+          <li style={liStyle}>Our total liability for any claim arising from the Service is limited to the fees you paid to us in the 12 months preceding the claim</li>
+        </ul>
+        <p style={pStyle}>
+          Nothing in these Terms excludes or limits liability that cannot be excluded under Australian Consumer Law.
+        </p>
+      </section>
+
+      <section style={sectionStyle}>
+        <h2 style={h2Style}>10. Indemnification</h2>
+        <p style={pStyle}>
+          You agree to indemnify and hold harmless Foxtail AI, its directors, officers, employees, and agents from and against any claims, losses, damages, liabilities, and expenses (including reasonable legal fees) arising from:
+        </p>
+        <ul style={ulStyle}>
+          <li style={liStyle}>Your use of the Service</li>
+          <li style={liStyle}>Your breach of these Terms</li>
+          <li style={liStyle}>Your violation of any applicable law or regulation</li>
+          <li style={liStyle}>Any claim by a third party related to your use of CCTV monitoring at your facility</li>
+        </ul>
+      </section>
+
+      <section style={{ ...sectionStyle, background: C.card, borderRadius: 16, padding: `48px ${mobile ? "20px" : "40px"}`, marginBottom: 40 }}>
+        <h2 style={h2Style}>11. Termination</h2>
+        <p style={pStyle}>
+          We may suspend or terminate your access to the Service at any time if you breach these Terms or if we reasonably believe your use of the Service may cause harm to us, other users, or third parties.
+        </p>
+        <p style={pStyle}>
+          Upon termination, your right to use the Service ceases immediately. You remain responsible for any fees incurred prior to termination. We may retain your data for a reasonable period to comply with legal obligations.
+        </p>
+      </section>
+
+      <section style={sectionStyle}>
+        <h2 style={h2Style}>12. Governing Law</h2>
+        <p style={pStyle}>
+          These Terms are governed by and construed in accordance with the laws of Queensland, Australia. Any disputes arising from these Terms or the Service are subject to the exclusive jurisdiction of the courts of Queensland.
+        </p>
+      </section>
+
+      <section style={{ ...sectionStyle, marginBottom: 40 }}>
+        <h2 style={h2Style}>13. Contact Us</h2>
+        <p style={pStyle}>
+          For questions about these Terms, please contact us:
+        </p>
+        <p style={pStyle}>
+          <strong style={{ color: C.t1 }}>Foxtail AI Pty Ltd</strong><br />
+          ACN 696 970 519<br />
+          Brisbane, Queensland, Australia<br />
+          Email: <span style={{ color: C.fox }}>admin@foxtailai.com.au</span>
+        </p>
+      </section>
+    </>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════
 // APP SHELL
 // ═══════════════════════════════════════════════════
 export default function FoxtailWebsite() {
@@ -1019,6 +1386,8 @@ export default function FoxtailWebsite() {
       case "distributors": return <DistributorsPage setPage={setPage} />;
       case "become-distributor": return <BecomeDistributorPage setPage={setPage} />;
       case "contact": return <ContactPage setPage={setPage} />;
+      case "privacy": return <PrivacyPage />;
+      case "terms": return <TermsPage />;
       default: return <HomePage setPage={setPage} />;
     }
   };

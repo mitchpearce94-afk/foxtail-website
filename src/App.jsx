@@ -258,28 +258,6 @@ function HomePage({ setPage }) {
         </div>
       </section>
 
-      {/* SOCIAL PROOF */}
-      <section className="fx-section" style={{ padding: mobile ? "40px 20px" : "48px 48px", borderTop: `1px solid ${C.border}`, background: C.forest }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "center", gap: mobile ? 24 : 48, flexWrap: "wrap" }}>
-          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: C.t4, letterSpacing: "0.1em", textTransform: "uppercase" }}>Built by access control professionals</span>
-          <div style={{ width: 1, height: 32, background: C.border, display: mobile ? "none" : "block" }} />
-          <div style={{ display: "flex", gap: mobile ? 24 : 40, alignItems: "center" }}>
-            <div style={{ textAlign: "center" }}>
-              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 20, fontWeight: 700, color: C.fox }}>10+</div>
-              <div style={{ fontSize: 10, color: C.t3, textTransform: "uppercase", letterSpacing: "0.08em" }}>Years in gyms</div>
-            </div>
-            <div style={{ textAlign: "center" }}>
-              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 20, fontWeight: 700, color: C.fox }}>100+</div>
-              <div style={{ fontSize: 10, color: C.t3, textTransform: "uppercase", letterSpacing: "0.08em" }}>Sites installed</div>
-            </div>
-            <div style={{ textAlign: "center" }}>
-              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 20, fontWeight: 700, color: C.fox }}>AU-wide</div>
-              <div style={{ fontSize: 10, color: C.t3, textTransform: "uppercase", letterSpacing: "0.08em" }}>Coverage</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* THE PROBLEM */}
       <section className="fx-section" style={{ position: "relative", padding: "120px 48px", borderTop: `1px solid ${C.border}`, background: C.forest, overflow: "hidden" }}>
         <GlowOrb x="70%" y="40%" size={600} color={C.red} opacity={0.025} />

@@ -169,7 +169,7 @@ function Footer({ setPage }) {
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12, cursor: "pointer" }} onClick={nl("home")}>
             <Mark size={24} /><span style={{ fontSize: 16, fontWeight: 600 }}>Foxtail</span>
           </div>
-          <div style={{ fontFamily: "'Manrope', sans-serif", fontWeight: 300, fontSize: 9, letterSpacing: "0.3em", textTransform: "uppercase", color: C.t4 }}>Detect · Alert · Protect</div>
+          <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 9, letterSpacing: "0.3em", textTransform: "uppercase", color: C.t4 }}>Detect · Alert · Protect</div>
         </div>
         <div style={{ display: "flex", gap: mobile ? 32 : 48, flexWrap: "wrap" }}>
           <div>
@@ -255,6 +255,37 @@ function HomePage({ setPage }) {
         <div className="fx-scroll-indicator" style={{ position: "absolute", bottom: 32, left: "50%", transform: "translateX(-50%)", display: "flex", flexDirection: "column", alignItems: "center", gap: 8, opacity: heroOpacity * 0.5 }}>
           <div style={{ width: 1, height: 40, background: `linear-gradient(to bottom, transparent, ${C.t3})` }} />
           <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: C.t3, letterSpacing: "0.15em" }}>SCROLL</span>
+        </div>
+      </section>
+
+      {/* SOCIAL PROOF */}
+      <section className="fx-section" style={{ padding: mobile ? "40px 20px" : "48px 48px", borderTop: `1px solid ${C.border}`, background: C.forest }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "center", gap: mobile ? 24 : 48, flexWrap: "wrap" }}>
+          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: C.t4, letterSpacing: "0.1em", textTransform: "uppercase" }}>Built by</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <div style={{ width: 32, height: 32, borderRadius: 8, background: C.surface, border: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span style={{ fontSize: 16, fontWeight: 700, color: C.fox }}>C</span>
+            </div>
+            <div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: C.t1 }}>Centrefit Group</div>
+              <div style={{ fontSize: 11, color: C.t3 }}>Access control &amp; security specialists</div>
+            </div>
+          </div>
+          <div style={{ width: 1, height: 32, background: C.border, display: mobile ? "none" : "block" }} />
+          <div style={{ display: "flex", gap: mobile ? 24 : 40, alignItems: "center" }}>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 20, fontWeight: 700, color: C.fox }}>10+</div>
+              <div style={{ fontSize: 10, color: C.t3, textTransform: "uppercase", letterSpacing: "0.08em" }}>Years in gyms</div>
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 20, fontWeight: 700, color: C.fox }}>100+</div>
+              <div style={{ fontSize: 10, color: C.t3, textTransform: "uppercase", letterSpacing: "0.08em" }}>Sites installed</div>
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 20, fontWeight: 700, color: C.fox }}>AU-wide</div>
+              <div style={{ fontSize: 10, color: C.t3, textTransform: "uppercase", letterSpacing: "0.08em" }}>Coverage</div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -1379,6 +1410,20 @@ function TermsPage() {
 export default function FoxtailWebsite() {
   const [page, setPage] = useState("home");
 
+  useEffect(() => {
+    const titles = {
+      home: "Foxtail AI — Anti-Tailgating Detection for Gyms",
+      pricing: "Pricing — Foxtail AI",
+      about: "About — Foxtail AI",
+      distributors: "Find a Distributor — Foxtail AI",
+      "become-distributor": "Become a Distributor — Foxtail AI",
+      contact: "Contact — Foxtail AI",
+      privacy: "Privacy Policy — Foxtail AI",
+      terms: "Terms of Service — Foxtail AI",
+    };
+    document.title = titles[page] || "Foxtail AI";
+  }, [page]);
+
   const renderPage = () => {
     switch (page) {
       case "pricing": return <PricingPage setPage={setPage} />;
@@ -1395,7 +1440,7 @@ export default function FoxtailWebsite() {
   return (
     <div style={{ background: C.night, color: C.t1, fontFamily: "'Space Grotesk', sans-serif", overflowX: "hidden", minHeight: "100vh", maxWidth: "100vw" }}>
       <style>{RESPONSIVE_CSS}{`html, body { overflow-x: hidden; max-width: 100vw; }`}</style>
-      <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&family=Manrope:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet" />
       <Nav page={page} setPage={setPage} />
       {renderPage()}
       <Footer setPage={setPage} />

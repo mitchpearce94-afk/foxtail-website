@@ -261,16 +261,7 @@ function HomePage({ setPage }) {
       {/* SOCIAL PROOF */}
       <section className="fx-section" style={{ padding: mobile ? "40px 20px" : "48px 48px", borderTop: `1px solid ${C.border}`, background: C.forest }}>
         <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "center", gap: mobile ? 24 : 48, flexWrap: "wrap" }}>
-          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: C.t4, letterSpacing: "0.1em", textTransform: "uppercase" }}>Built by</span>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={{ width: 32, height: 32, borderRadius: 8, background: C.surface, border: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <span style={{ fontSize: 16, fontWeight: 700, color: C.fox }}>C</span>
-            </div>
-            <div>
-              <div style={{ fontSize: 14, fontWeight: 600, color: C.t1 }}>Centrefit Group</div>
-              <div style={{ fontSize: 11, color: C.t3 }}>Access control &amp; security specialists</div>
-            </div>
-          </div>
+          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: C.t4, letterSpacing: "0.1em", textTransform: "uppercase" }}>Built by access control professionals</span>
           <div style={{ width: 1, height: 32, background: C.border, display: mobile ? "none" : "block" }} />
           <div style={{ display: "flex", gap: mobile ? 24 : 40, alignItems: "center" }}>
             <div style={{ textAlign: "center" }}>
@@ -1067,7 +1058,7 @@ function PrivacyPage() {
           Foxtail AI Pty Ltd (ACN 696 970 519) ("Foxtail AI", "we", "us", "our") is committed to protecting your privacy in accordance with the Australian Privacy Act 1988 (Cth) and the Australian Privacy Principles (APPs). This policy explains how we collect, use, disclose, and store personal information.
         </p>
         <p style={pStyle}>
-          Foxtail AI is a subsidiary of Centrefit Pty Ltd, operating from Brisbane, Queensland, Australia.
+          Foxtail AI Pty Ltd (ACN 696 970 519) operates from Brisbane, Queensland, Australia.
         </p>
       </section>
 
@@ -1233,7 +1224,7 @@ function TermsPage() {
         </p>
         <p style={pStyle}>Last updated: 10 April 2026</p>
         <p style={pStyle}>
-          These Terms of Service ("Terms") govern your access to and use of the services provided by Foxtail AI Pty Ltd (ACN 696 970 519) ("Foxtail AI", "we", "us", "our"), a subsidiary of Centrefit Pty Ltd, operating from Brisbane, Queensland, Australia.
+          These Terms of Service ("Terms") govern your access to and use of the services provided by Foxtail AI Pty Ltd (ACN 696 970 519) ("Foxtail AI", "we", "us", "our"), operating from Brisbane, Queensland, Australia.
         </p>
         <p style={pStyle}>
           By accessing or using our platform, dashboard, edge devices, or any related services (collectively, the "Service"), you agree to be bound by these Terms. If you do not agree, do not use the Service.

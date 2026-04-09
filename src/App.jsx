@@ -272,7 +272,7 @@ function HomePage({ setPage }) {
             {[
               { stat: "61%", label: "of organisations report tailgating as their #1 access control issue" },
               { stat: "<5s", label: "from detection to alert — with dual-camera video evidence attached" },
-              { stat: "0", label: "existing systems that detect someone being let in from inside — until now" },
+              { stat: "0", label: <>existing systems that detect someone being let in from inside — <strong style={{ color: C.fox }}>until now</strong></> },
             ].map((p, i) => (
               <Reveal key={i} delay={i * 0.12}>
                 <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: "40px 32px", textAlign: "center", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>

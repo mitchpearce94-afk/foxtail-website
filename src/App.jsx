@@ -272,7 +272,7 @@ function HomePage({ setPage }) {
             {[
               { stat: "61%", label: "of organisations report tailgating as their #1 access control issue" },
               { stat: "$1,000's", label: "in revenue lost every year from unpaid entries and membership sharing" },
-              { stat: "1", label: "existing system that detects someone being let in from inside" },
+              { stat: "0", label: "existing systems that detect someone being let in from inside — until now" },
             ].map((p, i) => (
               <Reveal key={i} delay={i * 0.12}>
                 <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: "40px 32px", textAlign: "center", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>

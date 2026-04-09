@@ -220,10 +220,10 @@ function HomePage({ setPage }) {
   const features = [
     { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>), title: "AI-Powered Detection", desc: "Computer vision watches both sides of every door. Whether someone tailgates, gets let in from inside, or walks through an unsecured entrance — Foxtail counts every person and flags every unauthorised entry instantly." },
     { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" /></svg>), title: "Video Evidence on Every Alert", desc: "Every alert comes with a 20-second dual-camera video clip and snapshot. See exactly what happened — not just that something happened." },
-    { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 0 1-3.46 0" /></svg>), title: "Alerts Straight to Your Inbox", desc: "Get an email within seconds of an incident — complete with camera footage. No app to check, no dashboard to watch. It comes to you." },
-    { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>), title: "Detects Propped Doors", desc: "Door left open or wedged? Foxtail recognises the pattern of continuous unscanned entries and sends a separate door-ajar alert." },
-    { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><rect x="2" y="3" width="20" height="14" rx="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" /></svg>), title: "Manage All Your Sites", desc: "One dashboard for every location. See which sites are online, review alerts, check live camera feeds, and manage everything from anywhere." },
-    { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" /></svg>), title: "Complete Turnkey System", desc: "Cameras, hardware, software, and cloud dashboard — all included. Your local distributor handles the installation. You just review the alerts." },
+    { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>), title: "Traffic Analytics", desc: "Track entries, exits, and occupancy in real time. Heatmaps show your busiest hours. Compare traffic across sites. Know exactly how your facility is being used." },
+    { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>), title: "Detects Propped Doors", desc: "Door left open or wedged? Foxtail recognises the pattern of continuous unscanned entries and sends a separate door-ajar alert with a security score." },
+    { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>), title: "AI Recommendations", desc: "Daily insights powered by your data — staffing suggestions for peak hours, tailgating pattern analysis, revenue protection scoring, and anomaly detection. Delivered to your dashboard and inbox." },
+    { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round"><rect x="2" y="3" width="20" height="14" rx="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" /></svg>), title: "Multi-Site Dashboard", desc: "Role-based dashboards for owners, managers, and staff. Live occupancy gauges, sortable alert tables, site comparison, and CSV exports — all from one login." },
   ];
 
   return (
@@ -271,7 +271,7 @@ function HomePage({ setPage }) {
           <div className="fx-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
             {[
               { stat: "61%", label: "of organisations report tailgating as their #1 access control issue" },
-              { stat: "$1,000's", label: "in revenue lost every year from unpaid entries and membership sharing" },
+              { stat: "<5s", label: "from detection to alert — with dual-camera video evidence attached" },
               { stat: "0", label: "existing systems that detect someone being let in from inside — until now" },
             ].map((p, i) => (
               <Reveal key={i} delay={i * 0.12}>
@@ -405,13 +405,14 @@ function HomePage({ setPage }) {
             <div>
               <SectionLabel>Your Dashboard</SectionLabel>
               <h2 style={{ fontSize: "clamp(28px, 3.5vw, 40px)", fontWeight: 700, letterSpacing: "-0.02em", marginBottom: 20, lineHeight: 1.15 }}>Everything in one place.</h2>
-              <p style={{ fontSize: 15, color: C.t2, lineHeight: 1.8, marginBottom: 36 }}>Review alerts, watch video evidence, check live camera feeds, and monitor device health — all from a single dashboard.</p>
+              <p style={{ fontSize: 15, color: C.t2, lineHeight: 1.8, marginBottom: 36 }}>Review alerts with video evidence, track traffic analytics, receive AI-powered recommendations, and manage every site — all from a single dashboard with daily briefings sent straight to your inbox.</p>
               <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
                 {[
-                  { label: "Real-time alert feed", desc: "See incidents as they happen across all your sites" },
-                  { label: "Video evidence playback", desc: "Watch the dual-camera clip attached to every alert" },
-                  { label: "Live camera snapshots", desc: "Check what your cameras see right now, from anywhere" },
-                  { label: "Multi-site management", desc: "One login for every location in your portfolio" },
+                  { label: "Real-time alert feed", desc: "See incidents as they happen with video evidence playback" },
+                  { label: "Traffic analytics & heatmaps", desc: "Entries, exits, occupancy, peak hours — across all your sites" },
+                  { label: "AI recommendations", desc: "Daily staffing, security, and revenue insights delivered automatically" },
+                  { label: "Morning briefing emails", desc: "Yesterday's traffic, alerts, and top recommendations — in your inbox at 7am" },
+                  { label: "Role-based access", desc: "Owners see all sites, managers see their club, staff see what they need" },
                 ].map((item, i) => (
                   <div key={i} style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
                     <div style={{ width: 6, height: 6, borderRadius: "50%", background: C.fox, marginTop: 7, flexShrink: 0 }} />
@@ -429,13 +430,13 @@ function HomePage({ setPage }) {
                   <span>ALERT FEED — LIVE</span><span style={{ color: C.green }}>● 3 SITES ONLINE</span>
                 </div>
                 {[
-                  { time: "10:31 PM", site: "Melbourne CBD", event: "Unauthorised entry — Front Door", type: "alert" },
-                  { time: "10:14 PM", site: "Melbourne CBD", event: "Video evidence uploaded", type: "info" },
-                  { time: "9:52 PM", site: "Southbank", event: "All clear — no incidents", type: "ok" },
+                  { time: "7:00 AM", site: "All sites", event: "Morning briefing delivered — 3 recommendations", type: "info" },
+                  { time: "10:31 PM", site: "Melbourne CBD", event: "Tailgate detected — Front Door (video attached)", type: "alert" },
+                  { time: "10:14 PM", site: "Melbourne CBD", event: "Peak hour staffing recommendation generated", type: "info" },
+                  { time: "9:52 PM", site: "Southbank", event: "All clear — 247 entries today, 0 incidents", type: "ok" },
                   { time: "8:41 PM", site: "Richmond", event: "Door held open — 4 unscanned entries", type: "alert" },
-                  { time: "8:41 PM", site: "Richmond", event: "Email alert sent to manager", type: "info" },
-                  { time: "7:15 PM", site: "Southbank", event: "Unauthorised entry — Side Door", type: "alert" },
-                  { time: "6:00 PM", site: "All sites", event: "Monitoring active", type: "ok" },
+                  { time: "8:00 PM", site: "Richmond", event: "Door security score: 70/100", type: "info" },
+                  { time: "6:00 PM", site: "All sites", event: "Monitoring active — 3 sites online", type: "ok" },
                 ].map((e, i) => (
                   <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "10px 0", borderBottom: i < 6 ? `1px solid ${C.border}` : "none", fontSize: 12 }}>
                     <span style={{ fontFamily: "'JetBrains Mono', monospace", color: C.t4, width: 64, flexShrink: 0, fontSize: 11 }}>{e.time}</span>

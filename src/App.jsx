@@ -456,7 +456,7 @@ function HomePage({ setPage }) {
           {[
             { val: 6, suf: " insights", label: "AI-generated daily per site" },
             { val: 24, suf: "/7", label: "Continuous AI monitoring" },
-            { val: 99, suf: "", pre: "$", label: "Per door, per month" },
+            { val: 99, suf: "", pre: "$", label: "Per door, per month (Protect)" },
           ].map((s, i) => (
             <Reveal key={i} delay={i * 0.1}>
               <div>
@@ -497,31 +497,57 @@ function PricingPage({ setPage }) {
       <PageHero label="Pricing" title={<>Simple, transparent<br /><span style={{ color: C.fox }}>pricing.</span></>} subtitle="Hardware kit upfront, monthly monitoring ongoing. No hidden fees. No lock-in contracts. Installation quoted separately by your local distributor." />
 
       <section style={{ position: "relative", padding: "0 48px 120px", overflow: "hidden" }}>
-        <div style={{ maxWidth: 480, margin: "0 auto" }}>
+        <div style={{ maxWidth: 900, margin: "0 auto" }}>
+          {/* Hardware */}
           <Reveal>
-            <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 20, padding: "56px 48px", position: "relative", overflow: "hidden" }}>
-              <GlowOrb x="50%" y="0%" size={400} color={C.fox} opacity={0.05} />
-              <div style={{ position: "relative", zIndex: 1, textAlign: "center" }}>
-                <div style={{ fontSize: 13, color: C.t3, fontWeight: 500, marginBottom: 8, letterSpacing: "0.05em" }}>PER DOOR, PER MONTH</div>
-                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 56, fontWeight: 700, color: C.fox, marginBottom: 6 }}>$99</div>
-                <div style={{ fontSize: 13, color: C.t3, marginBottom: 24 }}>ongoing monitoring & software</div>
-                <div style={{ background: C.night, border: `1px solid ${C.border}`, borderRadius: 10, padding: "16px 20px", marginBottom: 32, textAlign: "center" }}>
-                  <div style={{ fontSize: 11, color: C.t3, letterSpacing: "0.05em", marginBottom: 4 }}>ONE-TIME HARDWARE KIT</div>
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 24, fontWeight: 600, color: C.t1 }}>$1,699 <span style={{ fontSize: 12, fontWeight: 400, color: C.t3 }}>+ GST</span></div>
-                  <div style={{ fontSize: 11, color: C.t4, marginTop: 4 }}>Includes two AI cameras, processing hardware & software license</div>
+            <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 20, padding: "40px 48px", marginBottom: 24, textAlign: "center" }}>
+              <div style={{ fontSize: 11, color: C.t3, letterSpacing: "0.08em", marginBottom: 8 }}>ONE-TIME HARDWARE KIT</div>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 48, fontWeight: 700, color: C.t1 }}>$2,399 <span style={{ fontSize: 16, fontWeight: 400, color: C.t3 }}>+ GST</span></div>
+              <div style={{ fontSize: 13, color: C.t3, marginTop: 8 }}>Two AI cameras, on-site processing hardware, and software license. Installation quoted separately by your distributor.</div>
+            </div>
+          </Reveal>
+
+          {/* Tiers */}
+          <div className="fx-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+            <Reveal>
+              <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 20, padding: "48px 36px", height: "100%", display: "flex", flexDirection: "column" }}>
+                <div style={{ textAlign: "center", marginBottom: 32 }}>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: C.t3, letterSpacing: "0.08em", marginBottom: 8 }}>PROTECT</div>
+                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 48, fontWeight: 700, color: C.fox }}>$99<span style={{ fontSize: 16, fontWeight: 400, color: C.t3 }}>/mo</span></div>
+                  <div style={{ fontSize: 13, color: C.t3, marginTop: 4 }}>per door</div>
                 </div>
-                <div style={{ textAlign: "left", display: "flex", flexDirection: "column", gap: 14, marginBottom: 40 }}>
-                  {["Two dedicated AI cameras per door", "On-site AI processing hardware", "Cloud dashboard access", "Email alerts with video evidence", "Live camera snapshots", "24/7 continuous monitoring", "Remote system management", "All software updates included"].map((item, i) => (
+                <div style={{ display: "flex", flexDirection: "column", gap: 14, flex: 1 }}>
+                  {["24/7 AI-powered detection", "Tailgating & unauthorised entry alerts", "Propped door detection", "Email alerts with video evidence", "Cloud dashboard access", "Live camera snapshots", "Remote system management", "All software updates included"].map((item, i) => (
                     <div key={i} style={{ display: "flex", gap: 12, alignItems: "center" }}>
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke={C.fox} strokeWidth="1" opacity="0.3" /><path d="M5 8 L7 10 L11 6" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                      <span style={{ fontSize: 14, color: C.t2 }}>{item}</span>
+                      <span style={{ fontSize: 13, color: C.t2 }}>{item}</span>
                     </div>
                   ))}
                 </div>
-                <a href="#" onClick={e => { e.preventDefault(); setPage("distributors"); window.scrollTo(0, 0); }} style={{ display: "block", background: C.fox, color: C.night, padding: "14px 32px", borderRadius: 10, fontSize: 15, fontWeight: 600, textDecoration: "none", transition: "all 0.25s", boxShadow: `0 0 40px ${C.fox}25` }} onMouseOver={e => { e.target.style.background = C.foxLight; }} onMouseOut={e => { e.target.style.background = C.fox; }}>Find a Distributor</a>
+                <a href="#" onClick={e => { e.preventDefault(); setPage("distributors"); window.scrollTo(0, 0); }} style={{ display: "block", background: "transparent", color: C.t1, padding: "14px 32px", borderRadius: 10, fontSize: 14, fontWeight: 600, textDecoration: "none", border: `1px solid ${C.border}`, textAlign: "center", marginTop: 32, transition: "all 0.25s" }} onMouseOver={e => { e.target.style.borderColor = C.t3; e.target.style.background = C.card; }} onMouseOut={e => { e.target.style.borderColor = C.border; e.target.style.background = "transparent"; }}>Find a Distributor</a>
               </div>
-            </div>
-          </Reveal>
+            </Reveal>
+            <Reveal delay={0.15}>
+              <div style={{ background: C.surface, border: `1px solid ${C.fox}40`, borderRadius: 20, padding: "48px 36px", height: "100%", display: "flex", flexDirection: "column", position: "relative", overflow: "hidden" }}>
+                <GlowOrb x="50%" y="0%" size={400} color={C.fox} opacity={0.05} />
+                <div style={{ position: "absolute", top: 16, right: 16, background: `${C.fox}20`, color: C.fox, fontSize: 10, fontWeight: 700, padding: "4px 10px", borderRadius: 6, letterSpacing: "0.05em" }}>RECOMMENDED</div>
+                <div style={{ position: "relative", zIndex: 1, textAlign: "center", marginBottom: 32 }}>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: C.fox, letterSpacing: "0.08em", marginBottom: 8 }}>INSIGHTS</div>
+                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 48, fontWeight: 700, color: C.fox }}>$149<span style={{ fontSize: 16, fontWeight: 400, color: C.t3 }}>/mo</span></div>
+                  <div style={{ fontSize: 13, color: C.t3, marginTop: 4 }}>per door</div>
+                </div>
+                <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", gap: 14, flex: 1 }}>
+                  {["Everything in Protect, plus:", "Traffic analytics & heatmaps", "Real-time occupancy tracking", "AI-powered daily recommendations", "Staffing & security insights", "Revenue protection scoring", "Morning briefing emails", "Multi-site comparison & benchmarking"].map((item, i) => (
+                    <div key={i} style={{ display: "flex", gap: 12, alignItems: "center" }}>
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke={C.fox} strokeWidth="1" opacity="0.3" /><path d="M5 8 L7 10 L11 6" stroke={C.fox} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                      <span style={{ fontSize: 13, color: i === 0 ? C.fox : C.t2, fontWeight: i === 0 ? 600 : 400 }}>{item}</span>
+                    </div>
+                  ))}
+                </div>
+                <a href="#" onClick={e => { e.preventDefault(); setPage("distributors"); window.scrollTo(0, 0); }} style={{ position: "relative", zIndex: 1, display: "block", background: C.fox, color: C.night, padding: "14px 32px", borderRadius: 10, fontSize: 14, fontWeight: 600, textDecoration: "none", textAlign: "center", marginTop: 32, transition: "all 0.25s", boxShadow: `0 0 40px ${C.fox}25` }} onMouseOver={e => { e.target.style.background = C.foxLight; }} onMouseOut={e => { e.target.style.background = C.fox; }}>Find a Distributor</a>
+              </div>
+            </Reveal>
+          </div>
         </div>
       </section>
 
@@ -530,9 +556,10 @@ function PricingPage({ setPage }) {
         <div style={{ maxWidth: 640, margin: "0 auto" }}>
           <Reveal><SectionLabel>FAQ</SectionLabel></Reveal>
           {[
-            { q: "What's included in the $1,699 hardware kit?", a: "Two AI cameras, the on-site AI processing hardware, and a proprietary software license. Cabling and installation are handled separately — either by you, or your local Foxtail distributor can assist." },
-            { q: "Are there any lock-in contracts?", a: "No. The $99/month monitoring fee is ongoing with no minimum term. If you stop paying, the system goes offline — but there's no cancellation fee or penalty." },
-            { q: "What happens if I add more doors later?", a: "Each additional door requires its own camera pair and adds another $99/month to your monitoring. Your distributor can install additional doors at any time." },
+            { q: "What's included in the $2,399 hardware kit?", a: "Two AI cameras, the on-site AI processing hardware, and a software license. Cabling and installation are handled separately by your local Foxtail distributor." },
+            { q: "What's the difference between Protect and Insights?", a: "Protect ($99/mo) covers core detection — tailgating, unauthorised entry, and door ajar alerts with video evidence. Insights ($149/mo) adds traffic analytics, occupancy tracking, AI-powered recommendations, morning briefing emails, and multi-site benchmarking." },
+            { q: "Are there any lock-in contracts?", a: "No. Monthly monitoring is ongoing with no minimum term. If you stop paying, the system goes offline — but there's no cancellation fee or penalty." },
+            { q: "What happens if I add more doors later?", a: "Each additional door requires its own camera pair and adds another monthly fee. Same hardware, same pricing. Your distributor can install additional doors at any time." },
             { q: "Do I need an internet connection at the site?", a: "Yes. The system needs a standard internet connection to send alerts and sync with the cloud dashboard. The AI processing itself happens on-site — video is never uploaded to the cloud." },
             { q: "How is Foxtail different from turnstiles or speed gates?", a: "Turnstiles and speed gates physically block entry, but they're expensive, intrusive, and impractical for most facilities. More importantly, they still rely on a card scan as the trigger. If someone opens the door from inside and lets a friend in — no scan, no detection. Foxtail uses AI cameras on both sides of the door, so it catches every unauthorised entry regardless of how they got in." },
             { q: "Does it work with my existing CCTV?", a: "Foxtail uses its own dedicated camera system optimised for AI detection. This ensures consistent accuracy and means we don't interfere with your existing security setup." },

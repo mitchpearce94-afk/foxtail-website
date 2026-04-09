@@ -454,7 +454,7 @@ function HomePage({ setPage }) {
       <section ref={statsRef} className="fx-section" style={{ padding: "56px 48px", borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}`, background: C.forest }}>
         <div className="fx-stat-grid" style={{ maxWidth: 900, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 32, textAlign: "center" }}>
           {[
-            { val: 3, suf: " threats", label: "Detected automatically — tailgating, no-scan entry, propped doors" },
+            { val: 3, suf: "", label: "Threat types detected automatically — tailgating, no-scan entry, propped doors" },
             { val: 24, suf: "/7", label: "Continuous AI monitoring" },
             { val: 99, suf: "", pre: "$", label: "Per door, per month (Protect)" },
           ].map((s, i) => (

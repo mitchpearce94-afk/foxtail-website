@@ -474,7 +474,7 @@ function HomePage({ setPage }) {
         <div style={{ position: "relative", zIndex: 1, maxWidth: 550, margin: "0 auto" }}>
           <Reveal>
             <Mark size={44} />
-            <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: 700, letterSpacing: "-0.02em", marginTop: 20, marginBottom: 14, lineHeight: 1.15 }}>Ready to protect your doors?</h2>
+            <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: 700, letterSpacing: "-0.02em", marginTop: 20, marginBottom: 14, lineHeight: 1.15 }}>Your doors are wide open. Let's fix that.</h2>
             <p style={{ fontSize: 15, color: C.t2, marginBottom: 32, lineHeight: 1.7 }}>Find a local distributor or get in touch to learn more.</p>
             <div className="fx-hero-buttons" style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
               <a href="#" onClick={e => { e.preventDefault(); setPage("distributors"); window.scrollTo(0, 0); }} style={{ background: C.fox, color: C.night, padding: "14px 32px", borderRadius: 10, fontSize: 15, fontWeight: 600, textDecoration: "none", transition: "all 0.25s", boxShadow: `0 0 40px ${C.fox}30` }} onMouseOver={e => { e.target.style.background = C.foxLight; }} onMouseOut={e => { e.target.style.background = C.fox; }}>Find a Distributor</a>

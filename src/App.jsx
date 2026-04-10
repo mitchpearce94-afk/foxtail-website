@@ -45,7 +45,7 @@ const RESPONSIVE_CSS = `
 // ═══════════════════════════════════════════════════
 // SHARED COMPONENTS
 // ═══════════════════════════════════════════════════
-const Mark = ({ size = 44, pupilColor = C.night }) => (
+const Mark = ({ size = 44, pupilColor = C.fox }) => (
   <svg width={size} height={size} viewBox="0 0 44 44" fill="none">
     <circle cx="22" cy="22" r="18" stroke={C.fox} strokeWidth="0.4" opacity="0.12" />
     <path d="M22 4.5 L26 16 L22 13.5 L18 16 Z" fill={C.fox} opacity="0.95" />
@@ -123,7 +123,7 @@ function Nav({ page, setPage }) {
   return (
     <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, padding: mobile ? "0 20px" : "0 48px", height: 72, display: "flex", alignItems: "center", justifyContent: "space-between", background: scrollY > 50 || menuOpen ? `${C.night}ee` : "transparent", backdropFilter: scrollY > 50 || menuOpen ? "blur(20px)" : "none", borderBottom: scrollY > 50 ? `1px solid ${C.border}` : "1px solid transparent", transition: "all 0.4s ease" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 12, cursor: "pointer" }} onClick={() => nav("home")}>
-        <Mark size={28} /><span style={{ fontSize: 18, fontWeight: 600, letterSpacing: "-0.02em" }}>Foxtail</span>
+        <Mark size={28} /><span style={{ fontSize: 18, fontWeight: 600, letterSpacing: "-0.02em" }}>Foxtail <span style={{ fontWeight: 400, color: C.fox }}>AI</span></span>
       </div>
 
       {mobile ? (
@@ -167,7 +167,7 @@ function Footer({ setPage }) {
       <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", flexDirection: mobile ? "column" : "row", justifyContent: "space-between", alignItems: mobile ? "flex-start" : "flex-start", gap: mobile ? 40 : 0 }}>
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12, cursor: "pointer" }} onClick={nl("home")}>
-            <Mark size={24} /><span style={{ fontSize: 16, fontWeight: 600 }}>Foxtail</span>
+            <Mark size={24} /><span style={{ fontSize: 16, fontWeight: 600 }}>Foxtail <span style={{ fontWeight: 400, color: C.fox }}>AI</span></span>
           </div>
           <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 9, letterSpacing: "0.3em", textTransform: "uppercase", color: C.t4 }}>Detect · Alert · Protect</div>
         </div>

@@ -6,5 +6,5 @@
   <path d="M37 33.5 L27.5 26 L29 21.5 Z" fill="#F97316" opacity="0.35"/>
   <path d="M7 10.5 L16.5 18 L15 22.5 Z" fill="#F97316" opacity="0.3"/>
   <circle cx="22" cy="22" r="4" fill="#F97316"/>
-  <circle cx="22" cy="22" r="2" fill="#0A0F0A"/>
+  <circle cx="22" cy="22" r="2" fill="#F97316"/>
 </svg>

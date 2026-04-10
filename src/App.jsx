@@ -98,7 +98,7 @@ const PageHero = ({ label, title, subtitle, children }) => (
 );
 
 const APP_URL = "https://app.foxtailai.com.au";
-const API_BACKEND = "https://web-production-af09.up.railway.app";
+const API_BACKEND = "https://api.foxtailai.com.au";
 
 // ═══════════════════════════════════════════════════
 // NAV

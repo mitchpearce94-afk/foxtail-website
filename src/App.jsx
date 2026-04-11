@@ -1404,8 +1404,52 @@ function TermsPage() {
 // ═══════════════════════════════════════════════════
 // APP SHELL
 // ═══════════════════════════════════════════════════
+
+// URL <-> page-state mapping. vercel.json rewrites every path to
+// /index.html, so the SPA mounts on any URL — but we still need to
+// pick the right initial page from window.location.pathname AND keep
+// the URL in sync as the user navigates so Stripe (and any external
+// links to /terms or /privacy) actually land on the right page.
+const PATH_TO_PAGE = {
+  "/": "home",
+  "/pricing": "pricing",
+  "/about": "about",
+  "/distributors": "distributors",
+  "/become-distributor": "become-distributor",
+  "/contact": "contact",
+  "/privacy": "privacy",
+  "/terms": "terms",
+};
+const PAGE_TO_PATH = Object.fromEntries(
+  Object.entries(PATH_TO_PAGE).map(([path, pg]) => [pg, path])
+);
+
 export default function FoxtailWebsite() {
-  const [page, setPage] = useState("home");
+  const [page, setPage] = useState(() => {
+    if (typeof window === "undefined") return "home";
+    return PATH_TO_PAGE[window.location.pathname] || "home";
+  });
+
+  // Push the URL when the page state changes (user clicked a nav link).
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const targetPath = PAGE_TO_PATH[page] || "/";
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState({ page }, "", targetPath);
+    }
+  }, [page]);
+
+  // Handle browser back/forward — re-derive page from the URL.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const onPop = () => {
+      const next = PATH_TO_PAGE[window.location.pathname] || "home";
+      setPage(next);
+      window.scrollTo(0, 0);
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
 
   useEffect(() => {
     const titles = {
